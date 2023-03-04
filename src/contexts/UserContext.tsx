@@ -36,16 +36,16 @@ export function UserProvider({ children }: UserContextProviderProps) {
   const [login, setLogin] = useState(false)
   const [error, setError] = useState(null)
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        const response = await ApiService.tokenValidade()
-        console.log(response.data)
-      } catch (error) {
-        console.log(error)
-      }
-    })()
-  }, [])
+  // useEffect(() => {
+  //   ;(async () => {
+  //     try {
+  //       const response = await ApiService.tokenValidade()
+  //       console.log(response.data)
+  //     } catch (error) {
+  //       console.log(error)
+  //     }
+  //   })()
+  // }, [])
 
   const userLogin = useCallback(
     async ({ username, password }: IUserLoginDTO) => {

@@ -3,7 +3,6 @@ import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import Link from 'next/link'
-import { ApiService } from '@/services'
 import { LoginLayout } from './layout'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
@@ -67,14 +66,4 @@ export default function Login({ userCookie }: LoginProps) {
       </section>
     </LoginLayout>
   )
-}
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  const userCookie = CookieService.get({ name: '@Dogs:token', ctx })
-
-  return {
-    props: {
-      userCookie,
-    },
-  }
 }

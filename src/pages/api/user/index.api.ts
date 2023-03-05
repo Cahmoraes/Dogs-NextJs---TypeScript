@@ -1,7 +1,7 @@
 import { dogApi } from '@/services'
 import { assertsMethod, MethodTypes } from '@/pages/api/utils/assertsMethod'
 import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next'
-import { CookieService } from '@/utils/CookieService'
+import { CookieService, CookieTypes } from '@/utils/CookieService'
 import { errorHandler } from '../utils/errorHandler'
 
 type HandlersType = Record<MethodTypes, NextApiHandler>
@@ -9,16 +9,17 @@ type HandlersType = Record<MethodTypes, NextApiHandler>
 const handlers: HandlersType = {
   async GET(req, res) {
     const userToken = CookieService.get({
-      name: '@Dogs:token',
+      name: CookieTypes.TOKEN,
       ctx: { req, res },
     })
 
-    const response = await dogApi.get('/api/user', {
+    const { data } = await dogApi.get('/api/user', {
       headers: {
         Authorization: `Bearer ${userToken}`,
       },
     })
-    return res.json(response.data)
+
+    return res.json(data)
   },
 
   async POST(req, res) {

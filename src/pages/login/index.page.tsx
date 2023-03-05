@@ -19,7 +19,7 @@ interface LoginProps {
 }
 
 export default function Login({ userCookie }: LoginProps) {
-  const { userLogin } = useUserStorage()
+  const { userLogin, error } = useUserStorage()
   const {
     register,
     handleSubmit,
@@ -34,6 +34,18 @@ export default function Login({ userCookie }: LoginProps) {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  function rendeSubmitButton() {
+    return (
+      <Button disabled={isSubmitting}>
+        {isSubmitting ? 'Carregando...' : 'Enviar'}
+      </Button>
+    )
+  }
+
+  function renderError() {
+    return error && <p>{error}</p>
   }
 
   return (
@@ -57,7 +69,8 @@ export default function Login({ userCookie }: LoginProps) {
             {...register('password')}
           />
 
-          <Button disabled={isSubmitting}>Enviar</Button>
+          {rendeSubmitButton()}
+          {renderError()}
         </form>
 
         <Link href="/login/criar">Login Criar</Link>

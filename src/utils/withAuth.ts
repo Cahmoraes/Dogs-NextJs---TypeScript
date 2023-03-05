@@ -1,5 +1,5 @@
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { CookieService } from './CookieService'
+import { CookieService, CookieTypes } from './CookieService'
 
 export function withAuth<T extends Function>(
   callback: T,
@@ -7,14 +7,24 @@ export function withAuth<T extends Function>(
 ): GetServerSideProps {
   return async (ctx: GetServerSidePropsContext) => {
     try {
-      const userCookie = CookieService.get({
-        name: '@Dogs:token',
+      const token = CookieService.get({
+        name: CookieTypes.TOKEN,
         ctx: { req: ctx.req, res: ctx.res },
       })
 
+      const user = CookieService.get({
+        name: CookieTypes.USER,
+        ctx: { req: ctx.req, res: ctx.res },
+      })
+
+      const session = {
+        token,
+        user: JSON.parse(user),
+      }
+
       const newContext = {
         ...ctx,
-        session: userCookie || null,
+        session,
       }
 
       return callback(newContext)

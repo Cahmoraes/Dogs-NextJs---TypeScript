@@ -11,9 +11,9 @@ export default async function handler(
     assertsMethod(req.method, ['POST'])
 
     const userData = req.body
-    const response = await dogApi.post('/jwt-auth/v1/token', userData)
+    const { data } = await dogApi.post('/jwt-auth/v1/token', userData)
 
-    return res.json({ token: response.data.token })
+    return res.json(data.token)
   } catch (error) {
     return errorHandler(error, res)
   }

@@ -1,12 +1,7 @@
+import { useRouter } from 'next/router'
 import { ApiService } from '@/services'
-import { CookieService } from '@/utils/CookieService'
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { CookieService, CookieTypes } from '@/utils/CookieService'
+import { createContext, ReactNode, useCallback, useState } from 'react'
 
 interface IUserLoginDTO {
   username: string
@@ -22,6 +17,9 @@ interface IUserGetResponse {
 
 interface UserContextData {
   user: IUserGetResponse | null
+  error: string | null
+  loading: boolean
+  login: boolean
   userLogin(userLogin: IUserLoginDTO): Promise<void>
   userLogout(): Promise<void>
 }
@@ -35,62 +33,58 @@ interface UserContextProviderProps {
 export function UserProvider({ children }: UserContextProviderProps) {
   const [user, setUser] = useState<IUserGetResponse | null>(null)
   const [login, setLogin] = useState(false)
-  const [error, setError] = useState<any>(null)
-
-  const getUser = useCallback(async () => {
-    try {
-      if (!CookieService.has({ name: '@Dogs:token' })) {
-        return
-      }
-
-      setError(null)
-      setLogin(true)
-
-      await ApiService.validateToken()
-      const userResponse = await ApiService.userGet()
-      setUser(userResponse.data)
-      console.log('userResponse', userResponse.data)
-    } catch (error) {
-      console.log(error)
-      CookieService.destroy({ name: '@Dogs:token' })
-      setError(error)
-    }
-  }, [])
-
-  useEffect(() => {
-    getUser()
-  }, [getUser])
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
 
   const userLogout = useCallback(async () => {
     setUser(null)
     setError(null)
     setLogin(false)
-
-    CookieService.destroy({ name: '@Dogs:token' })
-  }, [])
+    destroyCookies()
+    router.push('/login')
+  }, [router])
 
   const userLogin = useCallback(
     async ({ username, password }: IUserLoginDTO) => {
       try {
-        const tokenResponse = await ApiService.getToken({ username, password })
-        const { token } = tokenResponse.data
+        setError(null)
+        setLoading(true)
 
+        const { data: token } = await ApiService.getToken({
+          username,
+          password,
+        })
         CookieService.set({
-          name: '@Dogs:token',
+          name: CookieTypes.TOKEN,
           value: token,
         })
 
-        const userResponse = await ApiService.userGet()
-        console.log(userResponse.data)
+        const { data: user } = await ApiService.userGet()
+        CookieService.set({
+          name: CookieTypes.USER,
+          value: JSON.stringify(user),
+        })
 
-        setUser(userResponse.data)
+        setUser(user)
         setLogin(true)
+
+        router.push('/conta')
       } catch (error) {
+        if (error instanceof Error) setError('Usuário inválido')
+        setLogin(false)
         console.log(error)
+      } finally {
+        setLoading(false)
       }
     },
-    [],
+    [router],
   )
+
+  const destroyCookies = () => {
+    CookieService.destroy({ name: CookieTypes.TOKEN })
+    CookieService.destroy({ name: CookieTypes.USER })
+  }
 
   return (
     <UserContext.Provider
@@ -98,6 +92,9 @@ export function UserProvider({ children }: UserContextProviderProps) {
         user,
         userLogin,
         userLogout,
+        error,
+        loading,
+        login,
       }}
     >
       {children}

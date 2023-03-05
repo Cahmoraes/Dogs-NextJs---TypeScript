@@ -13,7 +13,7 @@ interface ITokenDTO {
   password: string
 }
 
-interface IUserGetResponse {
+export interface IUserGetResponse {
   id: number
   username: string
   nome: string
@@ -22,7 +22,7 @@ interface IUserGetResponse {
 
 export class ApiService {
   static async getToken({ username, password }: ITokenDTO) {
-    return await api.post('/token', {
+    return await api.post<string>('/token', {
       username,
       password,
     })

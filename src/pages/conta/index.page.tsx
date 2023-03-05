@@ -6,7 +6,7 @@ interface AccountProps {
 }
 
 export default function Account({ session }: AccountProps) {
-  console.log(session)
+  // console.log(session)
 
   return (
     <div>

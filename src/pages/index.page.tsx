@@ -41,16 +41,16 @@ export default function Home({ session }: HomeProps) {
   )
 }
 
-interface ISession extends GetServerSidePropsContext {
-  session: string | null
-}
+// interface ISession extends GetServerSidePropsContext {
+//   session: string | null
+// }
 
-export const getServerSideProps: GetServerSideProps = withAuth(
-  async (ctx: ISession) => {
-    return {
-      props: {
-        session: ctx.session,
-      },
-    }
-  },
-)
+// export const getServerSideProps: GetServerSideProps = withAuth(
+//   async (ctx: ISession) => {
+//     return {
+//       props: {
+//         session: ctx.session,
+//       },
+//     }
+//   },
+// )

@@ -51,7 +51,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
         setError(null)
         setLoading(true)
 
-        const { data: token } = await ApiService.getToken({
+        const { data: token } = await ApiService.token.get({
           username,
           password,
         })
@@ -60,7 +60,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
           value: token,
         })
 
-        const { data: user } = await ApiService.userGet()
+        const { data: user } = await ApiService.user.get()
         CookieService.set({
           name: CookieTypes.USER,
           value: JSON.stringify(user),

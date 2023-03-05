@@ -21,14 +21,14 @@ interface IUserGetResponse {
 }
 
 export class ApiService {
-  static async token({ username, password }: ITokenDTO) {
+  static async getToken({ username, password }: ITokenDTO) {
     return await api.post('/token', {
       username,
       password,
     })
   }
 
-  static async tokenValidade() {
+  static async validateToken() {
     return await api.get('/token/validate')
   }
 

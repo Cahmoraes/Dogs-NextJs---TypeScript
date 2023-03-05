@@ -5,5 +5,9 @@
   ],
   "rules": {
     "no-async-promise-executor": "off"
+  },
+  "globals": {
+    "React": true,
+    "JSX": true
   }
 }

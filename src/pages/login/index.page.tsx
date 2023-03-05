@@ -1,4 +1,3 @@
-import { GetServerSideProps } from 'next'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -6,7 +5,6 @@ import Link from 'next/link'
 import { LoginLayout } from './layout'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
-import { CookieService } from '@/utils/CookieService'
 import { useUserStorage } from '@/hooks/useUserStorage'
 
 const loginSchema = z.object({

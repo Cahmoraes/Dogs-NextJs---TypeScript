@@ -22,6 +22,10 @@ export class CookieService {
     return parseCookies(ctx)[name]
   }
 
+  static has({ name, ctx = {} }: ICookieDTO): boolean {
+    return Boolean(this.get({ name, ctx }))
+  }
+
   static destroy({ name, ctx = {} }: ICookieDTO) {
     destroyCookie(ctx, name)
   }

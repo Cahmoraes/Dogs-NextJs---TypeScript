@@ -4,11 +4,14 @@ import Image from 'next/image'
 import { useUserStorage } from '@/hooks/useUserStorage'
 
 export function Header() {
-  const { user } = useUserStorage()
+  const { user, userLogout } = useUserStorage()
 
   function renderMenuLink() {
     return user ? (
-      <LinkLogin href="/conta">{user.nome}</LinkLogin>
+      <>
+        <LinkLogin href="/conta">{user.nome}</LinkLogin>
+        <button onClick={userLogout}>Sair</button>
+      </>
     ) : (
       <LinkLogin href="/login">Login / Criar</LinkLogin>
     )

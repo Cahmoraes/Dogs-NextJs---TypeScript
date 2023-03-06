@@ -9,6 +9,8 @@ import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
 import { ApiService } from '@/services/ApiService'
 import { useUserStorage } from '@/hooks/useUserStorage'
+import { useState } from 'react'
+import { Error } from '@/components/Error'
 
 const accountCreateDataSchema = z.object({
   username: z.string().min(1, 'Preencha um usuário válido'),
@@ -20,6 +22,8 @@ type AccountCreateData = z.infer<typeof accountCreateDataSchema>
 
 export default function LoginCreate() {
   const { userLogin } = useUserStorage()
+  const [createAccountError, setCreateAccountError] = useState('')
+
   const {
     handleSubmit,
     register,
@@ -29,18 +33,15 @@ export default function LoginCreate() {
   })
 
   async function handleCreateAccount(userData: AccountCreateData) {
-    console.log(userData)
     try {
-      const response = await ApiService.user.post(userData)
+      await ApiService.user.post(userData)
 
       await userLogin({
         username: userData.username,
         password: userData.password,
       })
-
-      console.log(response)
-    } catch (error) {
-      console.log(error)
+    } catch {
+      setCreateAccountError('Erro ao criar usuário')
     }
   }
 
@@ -50,6 +51,10 @@ export default function LoginCreate() {
         {isSubmitting ? 'Carregando...' : 'Cadastrar'}
       </Button>
     )
+  }
+
+  function renderCreateAccountError() {
+    return <Error message={createAccountError} />
   }
 
   return (
@@ -79,6 +84,7 @@ export default function LoginCreate() {
           />
 
           {rendeSubmitButton()}
+          {renderCreateAccountError()}
         </Form>
       </LoginCreateContainer>
     </LoginLayout>

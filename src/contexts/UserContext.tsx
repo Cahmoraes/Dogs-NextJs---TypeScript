@@ -1,7 +1,13 @@
 import { useRouter } from 'next/router'
 import { ApiService } from '@/services/ApiService'
 import { CookieService, CookieTypes } from '@/utils/CookieService'
-import { createContext, ReactNode, useCallback, useState } from 'react'
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from 'react'
 
 interface IUserLoginDTO {
   username: string
@@ -44,6 +50,33 @@ export function UserProvider({ children }: UserContextProviderProps) {
     destroyCookies()
     router.push('/login')
   }, [router])
+
+  useEffect(() => {
+    ;(async () => {
+      try {
+        if (!hasCookies()) return
+        const responseValidateOrError = await ApiService.token.validate()
+        if (responseValidateOrError.isLeft()) {
+          throw responseValidateOrError.value
+        }
+
+        const user = CookieService.get({
+          name: CookieTypes.USER,
+        })
+
+        setUser(JSON.parse(user))
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+  }, [])
+
+  const hasCookies = (): boolean => {
+    return (
+      CookieService.has({ name: CookieTypes.TOKEN }) &&
+      CookieService.has({ name: CookieTypes.USER })
+    )
+  }
 
   const userLogin = useCallback(
     async ({ username, password }: IUserLoginDTO) => {

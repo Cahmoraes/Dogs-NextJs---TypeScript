@@ -43,7 +43,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
-  const userLogout = useCallback(async () => {
+  const userLogout = useCallback(async (): Promise<void> => {
     setUser(null)
     setError(null)
     setLogin(false)
@@ -51,24 +51,22 @@ export function UserProvider({ children }: UserContextProviderProps) {
     router.push('/login')
   }, [router])
 
-  useEffect(() => {
-    ;(async () => {
-      try {
-        if (!hasCookies()) return
-        const responseValidateOrError = await ApiService.token.validate()
-        if (responseValidateOrError.isLeft()) {
-          throw responseValidateOrError.value
-        }
-
-        const user = CookieService.get({
-          name: CookieTypes.USER,
-        })
-
-        setUser(JSON.parse(user))
-      } catch (error) {
-        console.log(error)
+  const checkUserIsLogged = useCallback(async (): Promise<void> => {
+    try {
+      if (!hasCookies()) return
+      const responseValidateOrError = await ApiService.token.validate()
+      if (responseValidateOrError.isLeft()) {
+        throw responseValidateOrError.value
       }
-    })()
+
+      const user = CookieService.get({
+        name: CookieTypes.USER,
+      })
+
+      setUser(JSON.parse(user))
+    } catch (error) {
+      console.log(error)
+    }
   }, [])
 
   const hasCookies = (): boolean => {
@@ -79,7 +77,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
   }
 
   const userLogin = useCallback(
-    async ({ username, password }: IUserLoginDTO) => {
+    async ({ username, password }: IUserLoginDTO): Promise<void> => {
       try {
         setError(null)
         setLoading(true)
@@ -114,10 +112,14 @@ export function UserProvider({ children }: UserContextProviderProps) {
     [router],
   )
 
-  const destroyCookies = () => {
+  const destroyCookies = (): void => {
     CookieService.destroy({ name: CookieTypes.TOKEN })
     CookieService.destroy({ name: CookieTypes.USER })
   }
+
+  useEffect(() => {
+    checkUserIsLogged()
+  }, [checkUserIsLogged])
 
   return (
     <UserContext.Provider

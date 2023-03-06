@@ -21,12 +21,19 @@ interface IUserGetResponse {
   email: string
 }
 
+interface IUserCreateDTO {
+  username: string
+  email: string
+  password: string
+}
+
 interface UserContextData {
   user: IUserGetResponse | null
   error: string | null
   loading: boolean
   login: boolean
   userLogin(userLogin: IUserLoginDTO): Promise<void>
+  userCreate(userData: IUserCreateDTO): Promise<void>
   userLogout(): Promise<void>
 }
 
@@ -112,6 +119,22 @@ export function UserProvider({ children }: UserContextProviderProps) {
     [router],
   )
 
+  const userCreate = useCallback(
+    async (userData: IUserCreateDTO) => {
+      try {
+        await ApiService.user.post(userData)
+
+        await userLogin({
+          username: userData.username,
+          password: userData.password,
+        })
+      } catch {
+        setError('Erro ao criar usuário')
+      }
+    },
+    [userLogin],
+  )
+
   const destroyCookies = (): void => {
     CookieService.destroy({ name: CookieTypes.TOKEN })
     CookieService.destroy({ name: CookieTypes.USER })
@@ -126,6 +149,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
       value={{
         user,
         userLogin,
+        userCreate,
         userLogout,
         error,
         loading,

@@ -7,9 +7,7 @@ import { Form } from '../styles'
 import { LoginCreateContainer } from './styles'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
-import { ApiService } from '@/services/ApiService'
 import { useUserStorage } from '@/hooks/useUserStorage'
-import { useState } from 'react'
 import { Error } from '@/components/Error'
 
 const accountCreateDataSchema = z.object({
@@ -21,8 +19,7 @@ const accountCreateDataSchema = z.object({
 type AccountCreateData = z.infer<typeof accountCreateDataSchema>
 
 export default function LoginCreate() {
-  const { userLogin } = useUserStorage()
-  const [createAccountError, setCreateAccountError] = useState('')
+  const { userCreate, error } = useUserStorage()
 
   const {
     handleSubmit,
@@ -33,16 +30,7 @@ export default function LoginCreate() {
   })
 
   async function handleCreateAccount(userData: AccountCreateData) {
-    try {
-      await ApiService.user.post(userData)
-
-      await userLogin({
-        username: userData.username,
-        password: userData.password,
-      })
-    } catch {
-      setCreateAccountError('Erro ao criar usuário')
-    }
+    await userCreate(userData)
   }
 
   function rendeSubmitButton() {
@@ -54,7 +42,7 @@ export default function LoginCreate() {
   }
 
   function renderCreateAccountError() {
-    return <Error message={createAccountError} />
+    return <Error message={error} />
   }
 
   return (

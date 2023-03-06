@@ -7,6 +7,8 @@ import { Form } from '../styles'
 import { LoginCreateContainer } from './styles'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
+import { ApiService } from '@/services/ApiService'
+import { useUserStorage } from '@/hooks/useUserStorage'
 
 const accountCreateDataSchema = z.object({
   username: z.string().min(1, 'Preencha um usuário válido'),
@@ -17,6 +19,7 @@ const accountCreateDataSchema = z.object({
 type AccountCreateData = z.infer<typeof accountCreateDataSchema>
 
 export default function LoginCreate() {
+  const { userLogin } = useUserStorage()
   const {
     handleSubmit,
     register,
@@ -25,8 +28,20 @@ export default function LoginCreate() {
     resolver: zodResolver(accountCreateDataSchema),
   })
 
-  async function handleCreateAccount(data: AccountCreateData) {
-    console.log(data)
+  async function handleCreateAccount(userData: AccountCreateData) {
+    console.log(userData)
+    try {
+      const response = await ApiService.user.post(userData)
+
+      await userLogin({
+        username: userData.username,
+        password: userData.password,
+      })
+
+      console.log(response)
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   function rendeSubmitButton() {

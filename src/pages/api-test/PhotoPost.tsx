@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { dogApi } from '@/services'
+import { dogApi } from '@/services/ApiService'
 import { useState, FormEvent } from 'react'
 
 export default function PhotoPost() {

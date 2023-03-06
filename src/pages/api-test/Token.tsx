@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios'
-import { api } from '@/services'
+import { api } from '@/services/ApiService'
 import { useState, FormEvent } from 'react'
 
 export default function Token() {

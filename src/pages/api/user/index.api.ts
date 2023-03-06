@@ -1,4 +1,4 @@
-import { dogApi } from '@/services'
+import { dogApi } from '@/services/ApiService'
 import { assertsMethod, MethodTypes } from '@/pages/api/utils/assertsMethod'
 import { NextApiRequest, NextApiResponse, NextApiHandler } from 'next'
 import { CookieService, CookieTypes } from '@/utils/CookieService'

@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router'
-import { ApiService } from '@/services'
+import { ApiService } from '@/services/ApiService'
 import { CookieService, CookieTypes } from '@/utils/CookieService'
 import { createContext, ReactNode, useCallback, useState } from 'react'
 

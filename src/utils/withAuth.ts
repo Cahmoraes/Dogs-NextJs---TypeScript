@@ -1,4 +1,4 @@
-import { ApiService } from '@/services'
+import { ApiService } from '@/services/ApiService'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { CookieService, CookieTypes } from './CookieService'
 

@@ -22,6 +22,12 @@ export interface IUserGetResponse {
   email: string
 }
 
+export interface IUserPostRequest {
+  username: string
+  email: string
+  password: string
+}
+
 export class ApiService {
   static get token() {
     return {
@@ -62,6 +68,10 @@ export class ApiService {
     return {
       async get() {
         return await api.get<IUserGetResponse>('/user')
+      },
+
+      async post(userData: IUserPostRequest) {
+        return await api.post<IUserGetResponse>('/user', userData)
       },
     }
   }

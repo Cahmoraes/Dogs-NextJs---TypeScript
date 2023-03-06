@@ -1,3 +1,5 @@
+import { FooterContainer } from './styles'
+
 export function Footer() {
-  return <h1>footer</h1>
+  return <FooterContainer>Desenvolvido por Caique Moraes 💻</FooterContainer>
 }

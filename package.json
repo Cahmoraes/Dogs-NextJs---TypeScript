@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@cahmoraes93/either": "^1.0.2",
     "@cahmoraes93/maybe": "^1.0.5",
     "@hookform/resolvers": "^2.9.11",
     "@next/font": "13.1.6",

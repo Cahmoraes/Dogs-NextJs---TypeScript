@@ -1,5 +1,6 @@
+import axios from 'axios'
 import { CookieService, CookieTypes } from '@/utils/CookieService'
-import axios, { AxiosError } from 'axios'
+import { Either, EitherType } from '@cahmoraes93/either'
 
 export const api = axios.create({
   baseURL: '/api',
@@ -31,7 +32,7 @@ export class ApiService {
         })
       },
 
-      async validate(ctx = {}) {
+      async validate(ctx = {}): Promise<EitherType<any, string>> {
         try {
           const token = CookieService.get({
             name: CookieTypes.TOKEN,
@@ -48,12 +49,10 @@ export class ApiService {
             },
           )
 
-          // console.log({ data })
-
-          return data
+          return Either.right(data)
         } catch (error) {
           console.log(error)
-          return error
+          return Either.left(error)
         }
       },
     }

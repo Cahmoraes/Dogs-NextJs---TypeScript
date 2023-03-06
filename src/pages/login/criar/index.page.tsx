@@ -1,6 +1,6 @@
 import { ReactNode } from 'react'
 import Link from 'next/link'
-import { LoginLayout } from '../layout'
+import { LoginLayout } from '../layout/layout'
 
 export default function LoginCreate() {
   return (

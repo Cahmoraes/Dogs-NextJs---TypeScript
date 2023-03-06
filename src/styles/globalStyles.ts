@@ -1,3 +1,4 @@
+import { animeLeft } from './animations'
 import { globalCss } from './stitches.config'
 
 export const globalStyles = globalCss({
@@ -36,11 +37,18 @@ export const globalStyles = globalCss({
 
   a: {
     textDecoration: 'none',
+    color: '#333',
   },
 
   '.container': {
     maxWidth: '50rem',
     padding: '0 1rem',
     margin: '0 auto',
+  },
+
+  '.animeLeft': {
+    opacity: 1,
+    transform: 'translateX(-20px)',
+    animation: `${animeLeft} 0.3s forwards`,
   },
 })

@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { FormsContainer, LayoutContainer } from './styles'
 
 interface LoginLayoutProps {
   children: ReactNode
@@ -6,9 +7,8 @@ interface LoginLayoutProps {
 
 export function LoginLayout({ children }: LoginLayoutProps) {
   return (
-    <div>
-      <p>Layout Login</p>
-      {children}
-    </div>
+    <LayoutContainer>
+      <FormsContainer>{children}</FormsContainer>
+    </LayoutContainer>
   )
 }

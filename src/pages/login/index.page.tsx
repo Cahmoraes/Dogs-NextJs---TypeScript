@@ -1,11 +1,19 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import Link from 'next/link'
-import { LoginLayout } from './layout'
+import { LoginLayout } from './layout/layout'
+import { useUserStorage } from '@/hooks/useUserStorage'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
-import { useUserStorage } from '@/hooks/useUserStorage'
+import { Title } from '@/components/Title'
+import { Error } from '@/components/Error'
+import {
+  Form,
+  LinkCreate,
+  LinkLost,
+  RegisterContainer,
+  Subtitle,
+} from './styles'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Preenchimento obrigatório'),
@@ -44,16 +52,12 @@ export default function Login({ userCookie }: LoginProps) {
     )
   }
 
-  function renderError() {
-    return error && <p>{error}</p>
-  }
-
   return (
     <LoginLayout>
-      <section>
-        <h1>Login</h1>
+      <section className="animeLeft">
+        <Title>Login</Title>
 
-        <form onSubmit={handleSubmit(handleLogin)}>
+        <Form onSubmit={handleSubmit(handleLogin)}>
           <Input
             label="Usuário"
             id="username"
@@ -70,10 +74,16 @@ export default function Login({ userCookie }: LoginProps) {
           />
 
           {rendeSubmitButton()}
-          {renderError()}
-        </form>
+          <Error message={error} />
+        </Form>
 
-        <Link href="/login/criar">Login Criar</Link>
+        <LinkLost href="/login/perdeu">Perdeu a senha?</LinkLost>
+
+        <RegisterContainer>
+          <Subtitle>Cadastre-se</Subtitle>
+          <p>Ainda não possui conta? Cadastre-se no site</p>
+          <LinkCreate href="/login/criar">Login Criar</LinkCreate>
+        </RegisterContainer>
       </section>
     </LoginLayout>
   )

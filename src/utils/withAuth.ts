@@ -1,5 +1,4 @@
 import { ApiService } from '@/services'
-import { AxiosError } from 'axios'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
 import { CookieService, CookieTypes } from './CookieService'
 
@@ -9,9 +8,9 @@ export function withAuth<T extends Function>(
 ): GetServerSideProps {
   return async (ctx: GetServerSidePropsContext) => {
     try {
-      const responseValidade = await ApiService.token.validate(ctx)
-      if (responseValidade instanceof AxiosError) {
-        throw responseValidade
+      const responseValidateOrError = await ApiService.token.validate(ctx)
+      if (responseValidateOrError.isLeft()) {
+        throw responseValidateOrError.value
       }
 
       const token = CookieService.get({
@@ -40,7 +39,7 @@ export function withAuth<T extends Function>(
 
       return {
         redirect: {
-          destination: '/',
+          destination: redirectDestination,
           permanent: false,
         },
       }

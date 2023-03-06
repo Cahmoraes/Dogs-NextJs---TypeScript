@@ -82,7 +82,7 @@ export default function Login({ userCookie }: LoginProps) {
         <RegisterContainer>
           <Subtitle>Cadastre-se</Subtitle>
           <p>Ainda não possui conta? Cadastre-se no site</p>
-          <LinkCreate href="/login/criar">Login Criar</LinkCreate>
+          <LinkCreate href="/login/criar">Cadastrar</LinkCreate>
         </RegisterContainer>
       </section>
     </LoginLayout>

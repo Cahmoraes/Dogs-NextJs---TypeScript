@@ -13,7 +13,9 @@ export function Header() {
         <button onClick={userLogout}>Sair</button>
       </>
     ) : (
-      <LinkLogin href="/login">Login / Criar</LinkLogin>
+      <>
+        <LinkLogin href="/login">Login | Criar</LinkLogin>
+      </>
     )
   }
 

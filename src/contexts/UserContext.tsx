@@ -1,13 +1,7 @@
 import { useRouter } from 'next/router'
 import { ApiService } from '@/services/ApiService'
 import { CookieService, CookieTypes } from '@/utils/CookieService'
-import {
-  createContext,
-  ReactNode,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { createContext, ReactNode, useCallback, useState } from 'react'
 
 interface IUserLoginDTO {
   username: string
@@ -54,7 +48,6 @@ export function UserProvider({ children }: UserContextProviderProps) {
   const logout = useCallback(async (): Promise<void> => {
     try {
       destroyCookies()
-      console.log('userLogout hasCookies()', hasCookies())
       setUser(null)
       setError(null)
       await router.push('/login')
@@ -66,13 +59,12 @@ export function UserProvider({ children }: UserContextProviderProps) {
   const checkUserIsLogged = useCallback(async (): Promise<boolean> => {
     try {
       if (!hasCookies()) {
-        setIsLoading(false)
-        setUser(null)
-        setError(null)
+        resetStates()
         return false
       }
 
       const responseValidateOrError = await ApiService.token.validate()
+
       if (responseValidateOrError.isLeft()) {
         throw responseValidateOrError.value
       }
@@ -80,10 +72,6 @@ export function UserProvider({ children }: UserContextProviderProps) {
       const user = CookieService.get({
         name: CookieTypes.USER,
       })
-
-      if (!user) {
-        throw new Error('User not found')
-      }
 
       setUser(JSON.parse(user))
       return true
@@ -101,6 +89,12 @@ export function UserProvider({ children }: UserContextProviderProps) {
       CookieService.has({ name: CookieTypes.TOKEN }) &&
       CookieService.has({ name: CookieTypes.USER })
     )
+  }
+
+  const resetStates = () => {
+    setIsLoading(false)
+    setUser(null)
+    setError(null)
   }
 
   const login = useCallback(
@@ -157,12 +151,6 @@ export function UserProvider({ children }: UserContextProviderProps) {
     CookieService.destroy({ name: CookieTypes.TOKEN })
     CookieService.destroy({ name: CookieTypes.USER })
   }
-
-  useEffect(() => {
-    ;(async () => {
-      await checkUserIsLogged()
-    })()
-  }, [checkUserIsLogged])
 
   return (
     <UserContext.Provider

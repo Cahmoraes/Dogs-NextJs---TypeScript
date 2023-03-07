@@ -1,8 +1,8 @@
-import { createGetServerSidePropsWithAuth } from '@/utils/withAuth'
+import { withClientSession } from '@/utils/withClientSession'
 import { AccountLayout } from './layout'
 import { UserContainer } from './styles'
 
-export default function Account() {
+function Account() {
   return (
     <AccountLayout>
       <UserContainer>User</UserContainer>
@@ -10,4 +10,4 @@ export default function Account() {
   )
 }
 
-export const getServerSideProps = createGetServerSidePropsWithAuth()
+export default withClientSession(Account)

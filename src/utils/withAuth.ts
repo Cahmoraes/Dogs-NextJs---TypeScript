@@ -1,6 +1,6 @@
 import { ApiService } from '@/services/ApiService'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { CookieService, CookieTypes } from './CookieService'
+import { getSession } from './getSession'
 
 export function withAuth<T extends Function>(
   callback: T,
@@ -13,25 +13,7 @@ export function withAuth<T extends Function>(
         throw responseValidateOrError.value
       }
 
-      const token = CookieService.get({
-        name: CookieTypes.TOKEN,
-        ctx: { req: ctx.req, res: ctx.res },
-      })
-
-      const user = CookieService.get({
-        name: CookieTypes.USER,
-        ctx: { req: ctx.req, res: ctx.res },
-      })
-
-      const session = {
-        token,
-        user: JSON.parse(user),
-      }
-
-      const newContext = {
-        ...ctx,
-        session,
-      }
+      const newContext = getSession(ctx)
 
       return callback(newContext)
     } catch (error) {

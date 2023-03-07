@@ -1,11 +1,11 @@
-import { createGetServerSidePropsWithAuth } from '@/utils/withAuth'
+import { withClientSession } from '@/utils/withClientSession'
 import { AccountLayout } from '../layout'
 
 interface UserPhotoPostProps {
   session: string | null
 }
 
-export default function UserPhotoPost({ session }: UserPhotoPostProps) {
+function UserPhotoPost({ session }: UserPhotoPostProps) {
   console.log(session)
 
   return (
@@ -15,4 +15,4 @@ export default function UserPhotoPost({ session }: UserPhotoPostProps) {
   )
 }
 
-export const getServerSideProps = createGetServerSidePropsWithAuth()
+export default withClientSession(UserPhotoPost)

@@ -32,10 +32,10 @@ interface UserContextData {
   error: string | null
   isLogged: boolean
   isLoading: boolean
-  userLogin(userLogin: IUserLoginDTO): Promise<void>
-  userCreate(userData: IUserCreateDTO): Promise<void>
+  login(userLogin: IUserLoginDTO): Promise<void>
+  create(userData: IUserCreateDTO): Promise<void>
+  logout(): Promise<void>
   checkUserIsLogged(): Promise<boolean>
-  userLogout(): Promise<void>
 }
 
 export const UserContext = createContext({} as UserContextData)
@@ -51,7 +51,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
   const router = useRouter()
   const isLogged = !!user
 
-  const userLogout = useCallback(async (): Promise<void> => {
+  const logout = useCallback(async (): Promise<void> => {
     try {
       destroyCookies()
       console.log('userLogout hasCookies()', hasCookies())
@@ -81,6 +81,10 @@ export function UserProvider({ children }: UserContextProviderProps) {
         name: CookieTypes.USER,
       })
 
+      if (!user) {
+        throw new Error('User not found')
+      }
+
       setUser(JSON.parse(user))
       return true
     } catch (error) {
@@ -99,7 +103,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
     )
   }
 
-  const userLogin = useCallback(
+  const login = useCallback(
     async ({ username, password }: IUserLoginDTO): Promise<void> => {
       try {
         setError(null)
@@ -133,12 +137,12 @@ export function UserProvider({ children }: UserContextProviderProps) {
     [router],
   )
 
-  const userCreate = useCallback(
+  const create = useCallback(
     async (userData: IUserCreateDTO) => {
       try {
         await ApiService.user.post(userData)
 
-        await userLogin({
+        await login({
           username: userData.username,
           password: userData.password,
         })
@@ -146,20 +150,12 @@ export function UserProvider({ children }: UserContextProviderProps) {
         setError('Erro ao criar usuário')
       }
     },
-    [userLogin],
+    [login],
   )
 
   const destroyCookies = (): void => {
-    try {
-      console.log('=============destroy')
-      CookieService.destroy({ name: CookieTypes.TOKEN })
-      CookieService.destroy({ name: CookieTypes.USER })
-      console.log(CookieService.has({ name: CookieTypes.TOKEN }))
-      console.log(CookieService.has({ name: CookieTypes.USER }))
-      console.log('============destroy')
-    } catch (error) {
-      console.log(error)
-    }
+    CookieService.destroy({ name: CookieTypes.TOKEN })
+    CookieService.destroy({ name: CookieTypes.USER })
   }
 
   useEffect(() => {
@@ -172,9 +168,9 @@ export function UserProvider({ children }: UserContextProviderProps) {
     <UserContext.Provider
       value={{
         user,
-        userLogin,
-        userCreate,
-        userLogout,
+        login,
+        create,
+        logout,
         checkUserIsLogged,
         error,
         isLoading,

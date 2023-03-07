@@ -12,7 +12,7 @@ export function withClientSession(Component: ElementType) {
       ;(async () => {
         const isLogged = await checkUserIsLogged()
         if (!isLogged) {
-          router.push('/login')
+          await router.push('/login')
         }
       })()
     }, [checkUserIsLogged, router])

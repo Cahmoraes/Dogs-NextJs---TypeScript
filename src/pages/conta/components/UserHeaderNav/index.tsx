@@ -8,7 +8,7 @@ import { ExitIcon } from '@/assets/images/sair'
 import { ActiveLink } from '@/components/ActiveLink'
 
 export function UserHeaderNav() {
-  const { userLogout } = useUserStorage()
+  const { logout } = useUserStorage()
   const [isMobile] = useState(false)
 
   function renderOnlyIsMobile(text: string) {
@@ -32,7 +32,7 @@ export function UserHeaderNav() {
         {renderOnlyIsMobile('Adicionar Foto')}
       </ActiveLink>
 
-      <button onClick={userLogout}>
+      <button onClick={logout}>
         <ExitIcon />
         {renderOnlyIsMobile('Sair')}
       </button>

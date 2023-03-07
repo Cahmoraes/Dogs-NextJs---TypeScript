@@ -27,7 +27,7 @@ interface LoginProps {
 }
 
 export default function Login({ userCookie }: LoginProps) {
-  const { userLogin, error } = useUserStorage()
+  const { login, error } = useUserStorage()
   const {
     register,
     handleSubmit,
@@ -38,7 +38,7 @@ export default function Login({ userCookie }: LoginProps) {
 
   async function handleLogin({ username, password }: LoginSchemaType) {
     try {
-      await userLogin({ username, password })
+      await login({ username, password })
     } catch (error) {
       console.log(error)
     }

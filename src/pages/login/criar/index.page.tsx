@@ -19,7 +19,7 @@ const accountCreateDataSchema = z.object({
 type AccountCreateData = z.infer<typeof accountCreateDataSchema>
 
 export default function LoginCreate() {
-  const { userCreate, error } = useUserStorage()
+  const { create, error } = useUserStorage()
 
   const {
     handleSubmit,
@@ -30,7 +30,7 @@ export default function LoginCreate() {
   })
 
   async function handleCreateAccount(userData: AccountCreateData) {
-    await userCreate(userData)
+    await create(userData)
   }
 
   return (

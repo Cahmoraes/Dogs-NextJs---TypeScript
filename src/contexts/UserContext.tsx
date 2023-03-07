@@ -30,8 +30,8 @@ interface IUserCreateDTO {
 interface UserContextData {
   user: IUserGetResponse | null
   error: string | null
-  loading: boolean
-  login: boolean
+  isLogged: boolean
+  isLoading: boolean
   userLogin(userLogin: IUserLoginDTO): Promise<void>
   userCreate(userData: IUserCreateDTO): Promise<void>
   userLogout(): Promise<void>
@@ -45,15 +45,15 @@ interface UserContextProviderProps {
 
 export function UserProvider({ children }: UserContextProviderProps) {
   const [user, setUser] = useState<IUserGetResponse | null>(null)
-  const [login, setLogin] = useState(false)
-  const [loading, setLoading] = useState(false)
+  const [isLogged, setIsLogged] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
 
   const userLogout = useCallback(async (): Promise<void> => {
     setUser(null)
     setError(null)
-    setLogin(false)
+    setIsLogged(false)
     destroyCookies()
     router.push('/login')
   }, [router])
@@ -87,7 +87,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
     async ({ username, password }: IUserLoginDTO): Promise<void> => {
       try {
         setError(null)
-        setLoading(true)
+        setIsLoading(true)
 
         const { data: token } = await ApiService.token.get({
           username,
@@ -104,16 +104,16 @@ export function UserProvider({ children }: UserContextProviderProps) {
           value: JSON.stringify(user),
         })
 
-        setUser(user)
-        setLogin(true)
+        await router.push('/conta')
 
-        router.push('/conta')
+        setIsLogged(true)
+        setUser(user)
       } catch (error) {
         if (error instanceof Error) setError('Usuário inválido')
-        setLogin(false)
+        setIsLogged(false)
         console.log(error)
       } finally {
-        setLoading(false)
+        setIsLoading(false)
       }
     },
     [router],
@@ -152,8 +152,8 @@ export function UserProvider({ children }: UserContextProviderProps) {
         userCreate,
         userLogout,
         error,
-        loading,
-        login,
+        isLoading,
+        isLogged,
       }}
     >
       {children}

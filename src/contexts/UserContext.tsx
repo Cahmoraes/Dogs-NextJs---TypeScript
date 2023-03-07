@@ -58,9 +58,18 @@ export function UserProvider({ children }: UserContextProviderProps) {
     router.push('/login')
   }, [router])
 
+  const withClientSession = useCallback(async () => {
+    if (!hasCookies()) {
+      router.push('/')
+    }
+  }, [router])
+
   const checkUserIsLogged = useCallback(async (): Promise<void> => {
     try {
-      if (!hasCookies()) return
+      if (!hasCookies()) {
+        return
+      }
+
       const responseValidateOrError = await ApiService.token.validate()
       if (responseValidateOrError.isLeft()) {
         throw responseValidateOrError.value
@@ -73,8 +82,9 @@ export function UserProvider({ children }: UserContextProviderProps) {
       setUser(JSON.parse(user))
     } catch (error) {
       console.log(error)
+      router.push('/')
     }
-  }, [])
+  }, [router])
 
   const hasCookies = (): boolean => {
     return (
@@ -136,6 +146,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
   )
 
   const destroyCookies = (): void => {
+    console.log('destroy')
     CookieService.destroy({ name: CookieTypes.TOKEN })
     CookieService.destroy({ name: CookieTypes.USER })
   }

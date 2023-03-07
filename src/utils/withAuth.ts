@@ -46,3 +46,18 @@ export function withAuth<T extends Function>(
     }
   }
 }
+
+export interface ISession extends GetServerSidePropsContext {
+  session: string | null
+  user: string | null
+}
+
+export function createGetServerSidePropsWithAuth() {
+  return withAuth(async (ctx: ISession) => {
+    return {
+      props: {
+        session: ctx.session,
+      },
+    }
+  })
+}

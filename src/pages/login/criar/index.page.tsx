@@ -33,18 +33,6 @@ export default function LoginCreate() {
     await userCreate(userData)
   }
 
-  function rendeSubmitButton() {
-    return (
-      <Button disabled={isSubmitting}>
-        {isSubmitting ? 'Carregando...' : 'Cadastrar'}
-      </Button>
-    )
-  }
-
-  function renderCreateAccountError() {
-    return <Error message={error} />
-  }
-
   return (
     <LoginLayout>
       <LoginCreateContainer className="anime-left">
@@ -71,8 +59,11 @@ export default function LoginCreate() {
             error={errors.password}
           />
 
-          {rendeSubmitButton()}
-          {renderCreateAccountError()}
+          <Button disabled={isSubmitting}>
+            {isSubmitting ? 'Carregando...' : 'Cadastrar'}
+          </Button>
+
+          <Error message={error} />
         </Form>
       </LoginCreateContainer>
     </LoginLayout>

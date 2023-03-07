@@ -34,6 +34,7 @@ interface UserContextData {
   isLoading: boolean
   userLogin(userLogin: IUserLoginDTO): Promise<void>
   userCreate(userData: IUserCreateDTO): Promise<void>
+  checkUserIsLogged(): Promise<boolean>
   userLogout(): Promise<void>
 }
 
@@ -45,29 +46,30 @@ interface UserContextProviderProps {
 
 export function UserProvider({ children }: UserContextProviderProps) {
   const [user, setUser] = useState<IUserGetResponse | null>(null)
-  const [isLogged, setIsLogged] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
+  const isLogged = !!user
 
   const userLogout = useCallback(async (): Promise<void> => {
-    setUser(null)
-    setError(null)
-    setIsLogged(false)
-    destroyCookies()
-    router.push('/login')
-  }, [router])
-
-  const withClientSession = useCallback(async () => {
-    if (!hasCookies()) {
-      router.push('/')
+    try {
+      destroyCookies()
+      console.log('userLogout hasCookies()', hasCookies())
+      setUser(null)
+      setError(null)
+      await router.push('/login')
+    } catch (error) {
+      console.log(error)
     }
   }, [router])
 
-  const checkUserIsLogged = useCallback(async (): Promise<void> => {
+  const checkUserIsLogged = useCallback(async (): Promise<boolean> => {
     try {
       if (!hasCookies()) {
-        return
+        setIsLoading(false)
+        setUser(null)
+        setError(null)
+        return false
       }
 
       const responseValidateOrError = await ApiService.token.validate()
@@ -80,9 +82,13 @@ export function UserProvider({ children }: UserContextProviderProps) {
       })
 
       setUser(JSON.parse(user))
+      return true
     } catch (error) {
+      setIsLoading(false)
+      setUser(null)
       console.log(error)
       router.push('/')
+      return false
     }
   }, [router])
 
@@ -115,12 +121,10 @@ export function UserProvider({ children }: UserContextProviderProps) {
         })
 
         await router.push('/conta')
-
-        setIsLogged(true)
         setUser(user)
       } catch (error) {
         if (error instanceof Error) setError('Usuário inválido')
-        setIsLogged(false)
+
         console.log(error)
       } finally {
         setIsLoading(false)
@@ -146,13 +150,22 @@ export function UserProvider({ children }: UserContextProviderProps) {
   )
 
   const destroyCookies = (): void => {
-    console.log('destroy')
-    CookieService.destroy({ name: CookieTypes.TOKEN })
-    CookieService.destroy({ name: CookieTypes.USER })
+    try {
+      console.log('=============destroy')
+      CookieService.destroy({ name: CookieTypes.TOKEN })
+      CookieService.destroy({ name: CookieTypes.USER })
+      console.log(CookieService.has({ name: CookieTypes.TOKEN }))
+      console.log(CookieService.has({ name: CookieTypes.USER }))
+      console.log('============destroy')
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   useEffect(() => {
-    checkUserIsLogged()
+    ;(async () => {
+      await checkUserIsLogged()
+    })()
   }, [checkUserIsLogged])
 
   return (
@@ -162,6 +175,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
         userLogin,
         userCreate,
         userLogout,
+        checkUserIsLogged,
         error,
         isLoading,
         isLogged,

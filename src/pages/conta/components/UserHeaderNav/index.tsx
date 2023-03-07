@@ -9,7 +9,7 @@ import { ActiveLink } from '@/components/ActiveLink'
 
 export function UserHeaderNav() {
   const { userLogout } = useUserStorage()
-  const [isMobile, setIsMobile] = useState(false)
+  const [isMobile] = useState(false)
 
   function renderOnlyIsMobile(text: string) {
     return isMobile && text

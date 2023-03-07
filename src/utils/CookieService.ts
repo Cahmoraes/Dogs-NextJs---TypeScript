@@ -31,6 +31,8 @@ export class CookieService {
   }
 
   static destroy({ name, ctx = {} }: ICookieDTO) {
-    destroyCookie(ctx, name)
+    destroyCookie(ctx, name, {
+      path: '/',
+    })
   }
 }

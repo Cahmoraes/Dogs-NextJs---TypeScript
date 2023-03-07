@@ -1,7 +1,8 @@
-import { createGetServerSidePropsWithAuth } from '@/utils/withAuth'
+// import { createGetServerSidePropsWithAuth } from '@/utils/withAuth'
+import { withClientSession } from '@/utils/withClientSession'
 import { AccountLayout } from '../layout'
 
-export default function UserStats() {
+const UserStatsComponent = () => {
   return (
     <AccountLayout>
       <div>UserStats</div>
@@ -9,4 +10,6 @@ export default function UserStats() {
   )
 }
 
-export const getServerSideProps = createGetServerSidePropsWithAuth()
+export default withClientSession(UserStatsComponent)
+
+// export const getServerSideProps = createGetServerSidePropsWithAuth()

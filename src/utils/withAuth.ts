@@ -52,12 +52,15 @@ export interface ISession extends GetServerSidePropsContext {
   user: string | null
 }
 
-export function createGetServerSidePropsWithAuth() {
-  return withAuth(async (ctx: ISession) => {
-    return {
-      props: {
-        session: ctx.session,
-      },
-    }
-  })
+export function createGetServerSidePropsWithAuth(redirectPath = '/') {
+  return withAuth(
+    async (ctx: ISession) => {
+      return {
+        props: {
+          session: ctx.session,
+        },
+      }
+    },
+    { redirectPath },
+  )
 }

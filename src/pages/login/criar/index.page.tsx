@@ -27,6 +27,11 @@ export default function LoginCreate() {
     formState: { errors, isSubmitting },
   } = useForm<AccountCreateData>({
     resolver: zodResolver(accountCreateDataSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+      username: '',
+    },
   })
 
   async function handleCreateAccount(userData: AccountCreateData) {

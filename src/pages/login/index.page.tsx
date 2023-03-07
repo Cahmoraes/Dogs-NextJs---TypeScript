@@ -34,6 +34,10 @@ export default function Login({ userCookie }: LoginProps) {
     formState: { isSubmitting, errors },
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: 'dog',
+      password: 'dog',
+    },
   })
 
   async function handleLogin({ username, password }: LoginSchemaType) {

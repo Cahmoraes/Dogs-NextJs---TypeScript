@@ -9,6 +9,7 @@ export function AccountLayout({ children }: AccountProps) {
   return (
     <section className="container">
       <UserHeader />
+      <br />
       {children}
     </section>
   )

@@ -5,7 +5,9 @@ import { UserContainer } from './styles'
 function Account() {
   return (
     <AccountLayout>
-      <UserContainer>User</UserContainer>
+      <UserContainer>
+        <p>Minha conta</p>
+      </UserContainer>
     </AccountLayout>
   )
 }

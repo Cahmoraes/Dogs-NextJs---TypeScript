@@ -10,7 +10,9 @@ function UserPhotoPost({ session }: UserPhotoPostProps) {
 
   return (
     <AccountLayout>
-      <div>UserPhotoPost</div>
+      <div>
+        <p>Postar fotos</p>
+      </div>
     </AccountLayout>
   )
 }

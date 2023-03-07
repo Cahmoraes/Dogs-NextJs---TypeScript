@@ -5,7 +5,9 @@ import { AccountLayout } from '../layout'
 const UserStatsComponent = () => {
   return (
     <AccountLayout>
-      <div>UserStats</div>
+      <div>
+        <p>Estatísticas</p>
+      </div>
     </AccountLayout>
   )
 }

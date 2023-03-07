@@ -1,47 +1,36 @@
 import { useUserStorage } from '@/hooks/useUserStorage'
-import Link from 'next/link'
 import { UserHeaderNavContainer } from './styles'
-
 import { useState } from 'react'
-import { useRouter } from 'next/router'
 import { FeedIcon } from '@/assets/images/feed'
 import { StatsIcon } from '@/assets/images/estatisticas'
 import { AddIcon } from '@/assets/images/adicionar'
 import { ExitIcon } from '@/assets/images/sair'
+import { ActiveLink } from '@/components/ActiveLink'
 
 export function UserHeaderNav() {
   const { userLogout } = useUserStorage()
-  const router = useRouter()
   const [isMobile, setIsMobile] = useState(false)
 
   function renderOnlyIsMobile(text: string) {
     return isMobile && text
   }
 
-  function isActiveLink(path: string) {
-    return (
-      router.pathname === path && {
-        className: 'active',
-      }
-    )
-  }
-
   return (
     <UserHeaderNavContainer>
-      <Link href="/conta" {...isActiveLink('/conta')}>
+      <ActiveLink href="/conta">
         <FeedIcon />
         {renderOnlyIsMobile('Minhas Fotos')}
-      </Link>
+      </ActiveLink>
 
-      <Link href="/conta/estatisticas" {...isActiveLink('/conta/estatisticas')}>
+      <ActiveLink href="/conta/estatisticas">
         <StatsIcon />
         {renderOnlyIsMobile('Estatísticas')}
-      </Link>
+      </ActiveLink>
 
-      <Link href="/conta/postar" {...isActiveLink('/conta/postar')}>
+      <ActiveLink href="/conta/postar">
         <AddIcon />
         {renderOnlyIsMobile('Adicionar Foto')}
-      </Link>
+      </ActiveLink>
 
       <button onClick={userLogout}>
         <ExitIcon />

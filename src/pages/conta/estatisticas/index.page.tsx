@@ -9,4 +9,4 @@ export default function UserStats() {
   )
 }
 
-// export const getServerSideProps = createGetServerSidePropsWithAuth()
+export const getServerSideProps = createGetServerSidePropsWithAuth()

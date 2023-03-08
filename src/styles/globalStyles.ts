@@ -1,5 +1,6 @@
 import { animeLeft } from './animations'
 import { globalCss } from './stitches.config'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export const globalStyles = globalCss({
   '*': {
@@ -50,5 +51,11 @@ export const globalStyles = globalCss({
     opacity: 1,
     transform: 'translateX(-20px)',
     animation: `${animeLeft} 0.3s forwards`,
+  },
+
+  '@media (prefers-reduced-motion)': {
+    '.react-loading-skeleton': {
+      '--pseudo-element-display': 'block!important',
+    },
   },
 })

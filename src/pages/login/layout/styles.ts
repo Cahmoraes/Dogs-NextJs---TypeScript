@@ -10,6 +10,7 @@ export const LayoutContainer = styled('section', {
   '&::before': {
     content: '',
     display: 'block',
+    // background: `url(https://source.unsplash.com/random/1200x1600/?dog) no-repeat center center`,
     background: `url(${loginImage.src}) no-repeat center center`,
     backgroundSize: 'cover',
   },

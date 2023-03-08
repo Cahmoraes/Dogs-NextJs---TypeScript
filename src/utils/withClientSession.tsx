@@ -3,10 +3,9 @@ import { ElementType, useEffect } from 'react'
 import { useUserStorage } from '../hooks/useUserStorage'
 
 export function withClientSession(Component: ElementType) {
-  return function Wrapper(props: any) {
+  return function Wrapper(props: {}) {
     const { isLoading, checkUserIsLogged } = useUserStorage()
     const router = useRouter()
-    // console.log({ isLoading })
 
     useEffect(() => {
       ;(async () => {

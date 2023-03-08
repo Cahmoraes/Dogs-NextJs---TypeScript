@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import { CookieService, CookieTypes } from '@/utils/CookieService'
 import { Either, EitherType } from '@cahmoraes93/either'
 
@@ -72,6 +72,26 @@ export class ApiService {
 
       async post(userData: IUserPostRequest) {
         return await api.post<IUserGetResponse>('/user', userData)
+      },
+    }
+  }
+
+  static get photo() {
+    return {
+      async post(formData: FormData) {
+        const token = CookieService.get({ name: CookieTypes.TOKEN })
+
+        try {
+          await dogApi.post('/api/photo', formData, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            console.log(error.response?.data.error)
+          }
+        }
       },
     }
   }

@@ -40,7 +40,7 @@ interface UserContextProviderProps {
 
 export function UserProvider({ children }: UserContextProviderProps) {
   const [user, setUser] = useState<IUserGetResponse | null>(null)
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const isLogged = !!user
@@ -76,11 +76,12 @@ export function UserProvider({ children }: UserContextProviderProps) {
       setUser(JSON.parse(user))
       return true
     } catch (error) {
-      setIsLoading(false)
       setUser(null)
       console.log(error)
       router.push('/')
       return false
+    } finally {
+      setIsLoading(false)
     }
   }, [router])
 
@@ -92,7 +93,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
   }
 
   const resetStates = () => {
-    setIsLoading(false)
+    setIsLoading(true)
     setUser(null)
     setError(null)
   }

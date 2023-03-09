@@ -1,6 +1,5 @@
 import { withClientSession } from '@/utils/withClientSession'
 import { useForm } from 'react-hook-form'
-import { AccountLayout } from '../layout'
 import { FormPhotoPost, ImagePreview, UserPhotoPostContainer } from './styles'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -9,6 +8,7 @@ import { Button } from '@/components/forms/Button'
 import { ApiService } from '@/services/ApiService'
 import { ChangeEvent, useState } from 'react'
 import { useRouter } from 'next/router'
+import { withAccountLayout } from '@/utils/withLayout'
 
 const FormUserPhotoPostSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
@@ -78,40 +78,38 @@ function UserPhotoPost() {
   }
 
   return (
-    <AccountLayout>
-      <UserPhotoPostContainer className="animeLeft">
-        <FormPhotoPost onSubmit={handleSubmit(handleSubmitPhotoPost)}>
-          <Input label="Nome" error={errors.nome} {...register('nome')} />
+    <UserPhotoPostContainer className="animeLeft">
+      <FormPhotoPost onSubmit={handleSubmit(handleSubmitPhotoPost)}>
+        <Input label="Nome" error={errors.nome} {...register('nome')} />
 
-          <Input
-            label="Peso"
-            type="number"
-            error={errors.peso}
-            {...register('peso', { valueAsNumber: true })}
-          />
+        <Input
+          label="Peso"
+          type="number"
+          error={errors.peso}
+          {...register('peso', { valueAsNumber: true })}
+        />
 
-          <Input
-            label="Idade"
-            type="number"
-            error={errors.idade}
-            {...register('idade', { valueAsNumber: true })}
-          />
+        <Input
+          label="Idade"
+          type="number"
+          error={errors.idade}
+          {...register('idade', { valueAsNumber: true })}
+        />
 
-          <input
-            type="file"
-            id="img"
-            className="file"
-            {...register('img')}
-            onChange={handleImagePreview}
-          />
+        <input
+          type="file"
+          id="img"
+          className="file"
+          {...register('img')}
+          onChange={handleImagePreview}
+        />
 
-          {rendeSubmitButton()}
-        </FormPhotoPost>
+        {rendeSubmitButton()}
+      </FormPhotoPost>
 
-        {renderImagePreview()}
-      </UserPhotoPostContainer>
-    </AccountLayout>
+      {renderImagePreview()}
+    </UserPhotoPostContainer>
   )
 }
 
-export default withClientSession(UserPhotoPost)
+export default withClientSession(withAccountLayout(UserPhotoPost))

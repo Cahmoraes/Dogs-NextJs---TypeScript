@@ -1,15 +1,13 @@
 import { withClientSession } from '@/utils/withClientSession'
-import { AccountLayout } from './layout'
+import { withAccountLayout } from '@/utils/withLayout'
 import { UserContainer } from './styles'
 
 function Account() {
   return (
-    <AccountLayout>
-      <UserContainer>
-        <p>Minha conta</p>
-      </UserContainer>
-    </AccountLayout>
+    <UserContainer>
+      <p>Minha conta</p>
+    </UserContainer>
   )
 }
 
-export default withClientSession(Account)
+export default withClientSession(withAccountLayout(Account))

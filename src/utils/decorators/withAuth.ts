@@ -34,7 +34,13 @@ export interface ISession extends GetServerSidePropsContext {
   user: string | null
 }
 
-export function createGetServerSidePropsWithAuth(redirectDestination = '/') {
+interface CreateGetServerSidePropsWithAuthProps {
+  redirectDestination?: string
+}
+
+export function createGetServerSidePropsWithAuth({
+  redirectDestination = '/',
+}: CreateGetServerSidePropsWithAuthProps = {}) {
   return withAuth(async (ctx: ISession) => {
     return {
       props: {

@@ -1,5 +1,7 @@
-import Login from './login/index.page'
-
 export default function Home() {
-  return <Login />
+  return (
+    <div>
+      <h1>Seja bem vindo</h1>
+    </div>
+  )
 }

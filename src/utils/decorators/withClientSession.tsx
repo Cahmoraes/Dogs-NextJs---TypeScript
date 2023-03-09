@@ -1,9 +1,12 @@
 import { styled } from '@stitches/react'
 import { useRouter } from 'next/router'
 import { ElementType, useEffect } from 'react'
-import Skeleton from 'react-loading-skeleton'
 import { useUserStorage } from '../../hooks/useUserStorage'
 import { getRandomNumber } from '../getRandomNumber'
+import dynamic from 'next/dynamic'
+const DynamicSkeleton = dynamic(() => import('react-loading-skeleton'), {
+  ssr: false,
+})
 
 export function withClientSession(Component: ElementType) {
   return function Wrapper(props: {}) {
@@ -14,19 +17,17 @@ export function withClientSession(Component: ElementType) {
       ;(async () => {
         const isLogged = await checkUserIsLogged()
         if (!isLogged) {
-          await router.push('/login')
+          await router.push('/')
         }
       })()
     }, [checkUserIsLogged, router])
 
-    console.log({ isLoading })
-
     if (isLoading) {
       return (
         <SkeletonWrapper className="container">
-          <Skeleton height={getRandomNumber(80, 130)} />
-          <Skeleton height={getRandomNumber(100, 130)} />
-          <Skeleton height={getRandomNumber(200, 130)} />
+          <DynamicSkeleton height={getRandomNumber(80, 130)} />
+          <DynamicSkeleton height={getRandomNumber(100, 130)} />
+          <DynamicSkeleton height={getRandomNumber(200, 130)} />
         </SkeletonWrapper>
       )
     }

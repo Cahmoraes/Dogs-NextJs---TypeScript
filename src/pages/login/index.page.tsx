@@ -1,12 +1,13 @@
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { LoginLayout } from './layout/layout'
 import { useUserStorage } from '@/hooks/useUserStorage'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
 import { Title } from '@/components/Title'
 import { Error } from '@/components/Error'
+import { applyDecorators } from '@/utils/decorators/applyDecorators'
+import { withLoginLayout } from '@/utils/decorators/withLayout'
 import {
   Form,
   LinkCreate,
@@ -26,7 +27,7 @@ interface LoginProps {
   userCookie?: string
 }
 
-export default function Login({ userCookie }: LoginProps) {
+function Login({ userCookie }: LoginProps) {
   const { login, error } = useUserStorage()
   const {
     register,
@@ -57,38 +58,38 @@ export default function Login({ userCookie }: LoginProps) {
   }
 
   return (
-    <LoginLayout>
-      <section className="animeLeft">
-        <Title>Login</Title>
+    <section className="animeLeft">
+      <Title>Login</Title>
 
-        <Form onSubmit={handleSubmit(handleLogin)}>
-          <Input
-            label="Usuário"
-            id="username"
-            type="text"
-            error={errors?.username}
-            {...register('username')}
-          />
+      <Form onSubmit={handleSubmit(handleLogin)}>
+        <Input
+          label="Usuário"
+          id="username"
+          type="text"
+          error={errors?.username}
+          {...register('username')}
+        />
 
-          <Input
-            label="Senha"
-            id="password"
-            type="password"
-            {...register('password')}
-          />
+        <Input
+          label="Senha"
+          id="password"
+          type="password"
+          {...register('password')}
+        />
 
-          {rendeSubmitButton()}
-          <Error message={error} />
-        </Form>
+        {rendeSubmitButton()}
+        <Error message={error} />
+      </Form>
 
-        <LinkLost href="/login/perdeu">Perdeu a senha?</LinkLost>
+      <LinkLost href="/login/perdeu">Perdeu a senha?</LinkLost>
 
-        <RegisterContainer>
-          <Subtitle>Cadastre-se</Subtitle>
-          <p>Ainda não possui conta? Cadastre-se no site</p>
-          <LinkCreate href="/login/criar">Cadastrar</LinkCreate>
-        </RegisterContainer>
-      </section>
-    </LoginLayout>
+      <RegisterContainer>
+        <Subtitle>Cadastre-se</Subtitle>
+        <p>Ainda não possui conta? Cadastre-se no site</p>
+        <LinkCreate href="/login/criar">Cadastrar</LinkCreate>
+      </RegisterContainer>
+    </section>
   )
 }
+
+export default applyDecorators(Login, withLoginLayout)

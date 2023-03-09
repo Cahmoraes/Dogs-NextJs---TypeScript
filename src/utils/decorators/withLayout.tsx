@@ -1,4 +1,5 @@
 import { AccountLayout } from '@/pages/conta/layout'
+import { LoginLayout } from '@/pages/login/layout/layout'
 import { ElementType } from 'react'
 
 function withLayout(LayoutComponent: ElementType) {
@@ -14,3 +15,4 @@ function withLayout(LayoutComponent: ElementType) {
 }
 
 export const withAccountLayout = withLayout(AccountLayout)
+export const withLoginLayout = withLayout(LoginLayout)

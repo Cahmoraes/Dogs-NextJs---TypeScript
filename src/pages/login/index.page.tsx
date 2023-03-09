@@ -5,7 +5,6 @@ import { useUserStorage } from '@/hooks/useUserStorage'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
 import { Title } from '@/components/Title'
-import { Error } from '@/components/Loading'
 import { applyDecorators } from '@/utils/decorators/applyDecorators'
 import { withLoginLayout } from '@/utils/decorators/withLayout'
 import {
@@ -15,6 +14,7 @@ import {
   RegisterContainer,
   Subtitle,
 } from './styles'
+import { Error } from '@/components/Error'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Preenchimento obrigatório'),

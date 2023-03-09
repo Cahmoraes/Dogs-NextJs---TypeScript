@@ -1,6 +1,6 @@
 import { ApiService } from '@/services/ApiService'
 import { GetServerSideProps, GetServerSidePropsContext } from 'next'
-import { getSession } from './getSession'
+import { getSession } from '../getSession'
 
 export function withAuth<T extends Function>(
   callback: T,

@@ -1,5 +1,6 @@
-import { withClientSession } from '@/utils/withClientSession'
-import { withAccountLayout } from '@/utils/withLayout'
+import { applyDecorators } from '@/utils/decorators/applyDecorators'
+import { withClientSession } from '@/utils/decorators/withClientSession'
+import { withAccountLayout } from '@/utils/decorators/withLayout'
 import { UserContainer } from './styles'
 
 function Account() {
@@ -10,4 +11,4 @@ function Account() {
   )
 }
 
-export default withClientSession(withAccountLayout(Account))
+export default applyDecorators(Account, withAccountLayout, withClientSession)

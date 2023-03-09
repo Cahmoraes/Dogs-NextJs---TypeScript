@@ -1,4 +1,4 @@
-import { withClientSession } from '@/utils/withClientSession'
+import { withClientSession } from '@/utils/decorators/withClientSession'
 import { useForm } from 'react-hook-form'
 import { FormPhotoPost, ImagePreview, UserPhotoPostContainer } from './styles'
 import { z } from 'zod'
@@ -8,7 +8,8 @@ import { Button } from '@/components/forms/Button'
 import { ApiService } from '@/services/ApiService'
 import { ChangeEvent, useState } from 'react'
 import { useRouter } from 'next/router'
-import { withAccountLayout } from '@/utils/withLayout'
+import { applyDecorators } from '@/utils/decorators/applyDecorators'
+import { withAccountLayout } from '@/utils/decorators/withLayout'
 
 const FormUserPhotoPostSchema = z.object({
   nome: z.string().min(1, 'Nome é obrigatório'),
@@ -112,4 +113,8 @@ function UserPhotoPost() {
   )
 }
 
-export default withClientSession(withAccountLayout(UserPhotoPost))
+export default applyDecorators(
+  UserPhotoPost,
+  withAccountLayout,
+  withClientSession,
+)

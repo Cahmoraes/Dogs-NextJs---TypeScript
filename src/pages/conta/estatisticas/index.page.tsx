@@ -1,7 +1,8 @@
 // import { createGetServerSidePropsWithAuth } from '@/utils/withAuth'
 // import { withSkeleton } from '@/utils/withSkeleton'
-import { withClientSession } from '@/utils/withClientSession'
-import { withAccountLayout } from '@/utils/withLayout'
+import { applyDecorators } from '@/utils/decorators/applyDecorators'
+import { withClientSession } from '@/utils/decorators/withClientSession'
+import { withAccountLayout } from '@/utils/decorators/withLayout'
 
 const UserStatsComponent = () => {
   return (
@@ -11,5 +12,8 @@ const UserStatsComponent = () => {
   )
 }
 
-export default withClientSession(withAccountLayout(UserStatsComponent))
-// export const getServerSideProps = createGetServerSidePropsWithAuth()
+export default applyDecorators(
+  UserStatsComponent,
+  withAccountLayout,
+  withClientSession,
+)

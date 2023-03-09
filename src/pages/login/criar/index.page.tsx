@@ -8,7 +8,7 @@ import { LoginCreateContainer } from './styles'
 import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
 import { useUserStorage } from '@/hooks/useUserStorage'
-import { Error } from '@/components/Error'
+import { Error } from '@/components/Loading'
 
 const accountCreateDataSchema = z.object({
   username: z.string().min(1, 'Preencha um usuário válido'),

@@ -22,6 +22,23 @@ export interface IUserGetResponse {
   email: string
 }
 
+export interface IPhotosDTO {
+  page: number
+  total: number
+  user: number
+}
+
+interface IPhotosResponse {
+  acessos: string
+  author: string
+  id: number
+  idade: string
+  peso: string
+  src: string
+  title: string
+  total_comments: string
+}
+
 export interface IUserPostRequest {
   username: string
   email: string
@@ -91,6 +108,27 @@ export class ApiService {
           if (error instanceof AxiosError) {
             console.log(error.response?.data.error)
           }
+        }
+      },
+    }
+  }
+
+  static get photos() {
+    return {
+      async get({ page, total, user }: IPhotosDTO): Promise<IPhotosResponse[]> {
+        try {
+          const response = await api.get(
+            `/photos/?_page=${page}&&_total=${total}&_user=${user}`,
+          )
+          return response.data
+        } catch (error) {
+          console.log(error)
+
+          if (error instanceof AxiosError) {
+            console.log(error.response?.data.error)
+          }
+
+          throw error
         }
       },
     }

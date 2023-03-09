@@ -1,7 +1,9 @@
+import { Feed } from '@/components/Feed'
+
 export default function Home() {
   return (
-    <div>
-      <h1>Seja bem vindo</h1>
+    <div className="container main-container">
+      <Feed />
     </div>
   )
 }

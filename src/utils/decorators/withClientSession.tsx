@@ -16,9 +16,9 @@ export function withClientSession(Component: ElementType) {
     useEffect(() => {
       ;(async () => {
         const isLogged = await checkUserIsLogged()
-        if (!isLogged) {
-          await router.push('/')
-        }
+        if (isLogged) return
+
+        await router.push('/')
       })()
     }, [checkUserIsLogged, router])
 

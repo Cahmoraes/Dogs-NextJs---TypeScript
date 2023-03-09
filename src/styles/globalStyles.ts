@@ -47,6 +47,10 @@ export const globalStyles = globalCss({
     margin: '0 auto',
   },
 
+  'main-container': {
+    marginTop: '4rem',
+  },
+
   '.animeLeft': {
     opacity: 1,
     transform: 'translateX(-20px)',

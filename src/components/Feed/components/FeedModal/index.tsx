@@ -18,7 +18,6 @@ export function FeedModal() {
 
   function handleCloseModal(event: MouseEvent<HTMLDivElement>) {
     const { target, currentTarget } = event
-    console.log('aqui', target === currentTarget)
     if (target === currentTarget) {
       closeModal()
     }

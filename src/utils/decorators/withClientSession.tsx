@@ -12,15 +12,16 @@ export function withClientSession(Component: ElementType) {
   return function Wrapper(props: {}) {
     const { isLoading, checkUserIsLogged } = useUserStorage()
     const router = useRouter()
+    const isHome = router.pathname === '/'
 
     useEffect(() => {
       ;(async () => {
         const isLogged = await checkUserIsLogged()
         if (isLogged) return
-
+        if (isHome) return
         await router.push('/')
       })()
-    }, [checkUserIsLogged, router])
+    }, [checkUserIsLogged, router, isHome])
 
     if (isLoading) {
       return (

@@ -54,6 +54,11 @@ export interface IUserPostRequest {
   password: string
 }
 
+interface ICommentPost {
+  photoId: number
+  comment: string
+}
+
 export class ApiService {
   static get token() {
     return {
@@ -144,6 +149,25 @@ export class ApiService {
           const response = await api.get<IPhoto[]>(
             `/photos/?_page=${page}&&_total=${total}&_user=${user}`,
           )
+          return response.data
+        } catch (error) {
+          console.log(error)
+
+          if (error instanceof AxiosError) {
+            console.log(error.response?.data.error)
+          }
+
+          throw error
+        }
+      },
+    }
+  }
+
+  static get comment() {
+    return {
+      async post({ photoId, comment }: ICommentPost) {
+        try {
+          const response = await api.post(`/comment/${photoId}`, { comment })
           return response.data
         } catch (error) {
           console.log(error)

@@ -8,3 +8,8 @@ export interface IPhoto {
   title: string
   total_comments: string
 }
+
+export interface IPhotoModal {
+  photo: IPhoto
+  comments: any[]
+}

@@ -28,7 +28,11 @@ export interface IPhotosDTO {
   user: number
 }
 
-interface IPhotosResponse {
+interface IPhotoDTO {
+  id: number
+}
+
+interface IPhoto {
   acessos: string
   author: string
   id: number
@@ -37,6 +41,11 @@ interface IPhotosResponse {
   src: string
   title: string
   total_comments: string
+}
+
+interface IPhotoResponse {
+  photo: IPhoto
+  comments: any[]
 }
 
 export interface IUserPostRequest {
@@ -110,14 +119,29 @@ export class ApiService {
           }
         }
       },
+
+      async get({ id }: IPhotoDTO) {
+        try {
+          const response = await api.get<IPhotoResponse>(`/photo/${id}`)
+          return response.data
+        } catch (error) {
+          console.log(error)
+
+          if (error instanceof AxiosError) {
+            console.log(error.response?.data.error)
+          }
+
+          throw error
+        }
+      },
     }
   }
 
   static get photos() {
     return {
-      async get({ page, total, user }: IPhotosDTO): Promise<IPhotosResponse[]> {
+      async get({ page, total, user }: IPhotosDTO) {
         try {
-          const response = await api.get(
+          const response = await api.get<IPhoto[]>(
             `/photos/?_page=${page}&&_total=${total}&_user=${user}`,
           )
           return response.data

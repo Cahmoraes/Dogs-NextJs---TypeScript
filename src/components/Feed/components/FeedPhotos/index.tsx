@@ -1,13 +1,13 @@
 import { Error } from '@/components/Error'
-import { useFeedPhotos } from '@/hooks/useFeedPhotos'
-import { FeedPhotosItem } from '../FeedPhotosItem'
+import { usePhotos } from '@/hooks/usePhotos'
+import { FeedPhotosItem, FeedPhotosItemSkeleton } from '../FeedPhotosItem'
 import { FeedPhotosContainer } from './styles'
 
 export function FeedPhotos() {
-  const { photos, error, isLoading } = useFeedPhotos()
+  const { photos, error, isLoading } = usePhotos()
 
   if (error) return <Error message={error} />
-  if (isLoading) return <p>Carregando...</p>
+  if (isLoading) return <FeedPhotosSkeleton />
 
   function renderPhotosItems() {
     return photos.map((photo) => (
@@ -18,6 +18,19 @@ export function FeedPhotos() {
   return (
     <FeedPhotosContainer className="animeLeft">
       {renderPhotosItems()}
+    </FeedPhotosContainer>
+  )
+}
+
+function FeedPhotosSkeleton() {
+  return (
+    <FeedPhotosContainer className="animeLeft">
+      <FeedPhotosItemSkeleton />
+      <FeedPhotosItemSkeleton />
+      <FeedPhotosItemSkeleton />
+      <FeedPhotosItemSkeleton />
+      <FeedPhotosItemSkeleton />
+      <FeedPhotosItemSkeleton />
     </FeedPhotosContainer>
   )
 }

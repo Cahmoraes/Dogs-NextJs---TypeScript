@@ -12,9 +12,9 @@ export default async function handler(
     const id = req.query.id ? String(req.query.id) : null
     console.log(id)
 
-    const response = await dogApi.get(getPathPhoto(id))
+    const { data } = await dogApi.get(getPathPhoto(id))
 
-    return res.json({ data: response.data })
+    return res.json(data)
   } catch (error) {
     return errorHandler(error, res)
   }

@@ -2,7 +2,7 @@ import { IPhoto } from '@/components/Feed/interfaces/IPhoto'
 import { ApiService } from '@/services/ApiService'
 import { useEffect, useState } from 'react'
 
-export function useFeedPhotos() {
+export function usePhotos() {
   const [photos, setPhotos] = useState<IPhoto[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)

@@ -14,6 +14,7 @@ export function FeedPhotosItem({ photo }: FeedPhotosProps) {
     selectModalPhoto(photo)
   }
 
+  if (!photo) return null
   return (
     <FeedPhotosItemContainer onClick={handlePhotoClick}>
       <Image src={photo.src} alt={photo.title} width={300} height={300} />

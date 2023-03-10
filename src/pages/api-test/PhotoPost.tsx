@@ -18,13 +18,12 @@ export default function PhotoPost() {
     formData.append('img', img!)
 
     try {
-      const response = await dogApi.post('/api/photo', formData, {
+      await dogApi.post('/api/photo', formData, {
         headers: {
           // 'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`,
         },
       })
-      console.log(response)
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data.error)

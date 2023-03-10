@@ -1,9 +1,13 @@
-import { IPhoto } from '@/components/Feed/interfaces/IPhoto'
+import { IPhoto, IPhotoModal } from '@/components/Feed/interfaces/IPhoto'
+import { ApiService } from '@/services/ApiService'
 import { createContext, ReactNode, useCallback, useState } from 'react'
 
 interface FeedContextData {
-  modalPhoto: IPhoto | null
+  modalPhoto: IPhotoModal | null
   selectModalPhoto(aPhoto: IPhoto): void
+  closeModal(): void
+  isLoading: boolean
+  error: string
 }
 
 export const FeedContext = createContext({} as FeedContextData)
@@ -13,10 +17,29 @@ interface FeedContextProviderProps {
 }
 
 export function FeedContextProvider({ children }: FeedContextProviderProps) {
-  const [modalPhoto, setModalPhoto] = useState<IPhoto | null>(null)
+  const [modalPhoto, setModalPhoto] = useState<IPhotoModal | null>(null)
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
-  const selectModalPhoto = useCallback((aPhoto: IPhoto) => {
-    setModalPhoto(aPhoto)
+  const selectModalPhoto = useCallback(async (aPhoto: IPhoto) => {
+    try {
+      setIsLoading(true)
+
+      const photoResponse = await ApiService.photo.get({
+        id: aPhoto.id,
+      })
+
+      setModalPhoto(photoResponse)
+    } catch (error) {
+      console.log(error)
+      setError('Erro ao carregar fotos')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setModalPhoto(null)
   }, [])
 
   return (
@@ -24,6 +47,9 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
       value={{
         modalPhoto,
         selectModalPhoto,
+        closeModal,
+        isLoading,
+        error,
       }}
     >
       {children}

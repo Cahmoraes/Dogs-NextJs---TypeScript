@@ -54,7 +54,6 @@ function UserPhotoPost() {
   }
 
   function handleImagePreview({ target }: ChangeEvent<HTMLInputElement>) {
-    console.log(target)
     if (target?.files?.length! < 1) return
     const preview = URL.createObjectURL(target.files![0])
     setImagePreview(preview)

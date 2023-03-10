@@ -1,26 +1,40 @@
+import { MouseEvent } from 'react'
 import { Error } from '@/components/Error'
-import { PhotoContent } from '@/components/Photo/PhotoContent'
+import {
+  PhotoContent,
+  PhotoContentSkeleton,
+} from '@/components/Photo/PhotoContent'
 import { useFeed } from '@/hooks/useFeed'
-import { usePhoto } from '@/hooks/usePhoto'
-import Skeleton from 'react-loading-skeleton'
 import { FeedModalContainer } from './styles'
 
 export function FeedModal() {
-  const { modalPhoto } = useFeed()
-  const { photoData, isLoading, error } = usePhoto(modalPhoto?.id)
-  console.log(photoData)
+  const { modalPhoto, closeModal, error, isLoading } = useFeed()
 
   function renderError() {
     return error && <Error message={error} />
   }
 
-  if (!photoData) return null
-  if (isLoading) return <Skeleton width={300} height={300} />
+  function handleCloseModal(event: MouseEvent<HTMLDivElement>) {
+    const { target, currentTarget } = event
+    if (target === currentTarget) {
+      closeModal()
+    }
+  }
+
+  if (isLoading)
+    return (
+      <FeedModalContainer onClick={handleCloseModal}>
+        <PhotoContentSkeleton />
+      </FeedModalContainer>
+    )
+
+  if (!modalPhoto) return null
+
   return (
-    <FeedModalContainer>
+    <FeedModalContainer onClick={handleCloseModal}>
       {renderError()}
 
-      <PhotoContent photoData={photoData} />
+      <PhotoContent photoData={modalPhoto} />
     </FeedModalContainer>
   )
 }

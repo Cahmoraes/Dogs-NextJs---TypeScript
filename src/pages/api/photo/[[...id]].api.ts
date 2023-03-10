@@ -10,7 +10,6 @@ export default async function handler(
   try {
     assertsMethod(req.method, ['GET'])
     const id = req.query.id ? String(req.query.id) : null
-    console.log(id)
 
     const { data } = await dogApi.get(getPathPhoto(id))
 

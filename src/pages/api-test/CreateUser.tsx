@@ -10,12 +10,11 @@ export default function CreateUser() {
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
     try {
-      const response = await api.post('/user', {
+      await api.post('/user', {
         username,
         email,
         password,
       })
-      console.log(response)
     } catch (error) {
       if (error instanceof AxiosError) {
         console.log(error.response?.data.error)

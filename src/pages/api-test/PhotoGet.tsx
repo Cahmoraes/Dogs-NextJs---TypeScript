@@ -7,10 +7,8 @@ export default function PhotoGet() {
 
   async function handleSubmit(event: FormEvent) {
     event.preventDefault()
-    console.log(id)
     try {
-      const response = await api.get(`/photo/${id}`)
-      console.log(response)
+      await api.get(`/photo/${id}`)
     } catch (error) {
       console.log(error)
       if (error instanceof AxiosError) {

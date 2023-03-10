@@ -17,7 +17,6 @@ export function usePhotos() {
           user: 0,
         })
 
-        console.log(photosResponse)
         setPhotos(photosResponse)
       } catch (error) {
         console.log(error)

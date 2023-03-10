@@ -3,9 +3,9 @@ import { ApiService } from '@/services/ApiService'
 import { useEffect, useState } from 'react'
 
 export function usePhoto(id?: number) {
-  const [photoData, setPhotoData] = useState<IPhotoModal>()
-  const [error, setError] = useState('')
+  const [photoData, setPhotoData] = useState<IPhotoModal | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   useEffect(() => {
     ;(async () => {
@@ -13,6 +13,7 @@ export function usePhoto(id?: number) {
 
       try {
         setIsLoading(true)
+
         const photoResponse = await ApiService.photo.get({
           id,
         })

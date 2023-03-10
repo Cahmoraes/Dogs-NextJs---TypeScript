@@ -1,6 +1,7 @@
 import axios, { AxiosError } from 'axios'
 import { CookieService, CookieTypes } from '@/utils/CookieService'
 import { Either, EitherType } from '@cahmoraes93/either'
+import { IComment } from '@/components/Feed/interfaces/IPhoto'
 
 export const api = axios.create({
   baseURL: '/api',
@@ -167,7 +168,9 @@ export class ApiService {
     return {
       async post({ photoId, comment }: ICommentPost) {
         try {
-          const response = await api.post(`/comment/${photoId}`, { comment })
+          const response = await api.post<IComment>(`/comment/${photoId}`, {
+            comment,
+          })
           return response.data
         } catch (error) {
           console.log(error)

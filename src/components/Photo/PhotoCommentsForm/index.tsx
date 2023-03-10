@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useFeed } from '@/hooks/useFeed'
 import { SedIcon } from '@/assets/images/enviar'
+import { IComment } from '@/components/Feed/interfaces/IPhoto'
 
 const commentFormSchema = z.object({
   comment: z.string().min(1),
@@ -10,7 +11,11 @@ const commentFormSchema = z.object({
 
 type CommentFormData = z.infer<typeof commentFormSchema>
 
-export function PhotoCommentsForm() {
+interface PhotoCommentsFormProps {
+  updateComments(aComment: IComment): void
+}
+
+export function PhotoCommentsForm({ updateComments }: PhotoCommentsFormProps) {
   const { modalPhoto, addCommentPhoto } = useFeed()
   const { handleSubmit, register } = useForm<CommentFormData>({
     resolver: zodResolver(commentFormSchema),
@@ -20,10 +25,12 @@ export function PhotoCommentsForm() {
   const { photo } = modalPhoto
 
   async function handleCreateComment({ comment }: CommentFormData) {
-    await addCommentPhoto({
+    const commentResponse = await addCommentPhoto({
       photoId: photo.id,
       comment,
     })
+
+    updateComments(commentResponse)
   }
 
   return (

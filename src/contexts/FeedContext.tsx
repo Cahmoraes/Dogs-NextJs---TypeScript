@@ -1,4 +1,8 @@
-import { IPhoto, IPhotoModal } from '@/components/Feed/interfaces/IPhoto'
+import {
+  IComment,
+  IPhoto,
+  IPhotoModal,
+} from '@/components/Feed/interfaces/IPhoto'
 import { ApiService } from '@/services/ApiService'
 import { createContext, ReactNode, useCallback, useState } from 'react'
 
@@ -11,7 +15,7 @@ interface FeedContextData {
   modalPhoto: IPhotoModal | null
   selectModalPhoto(aPhoto: IPhoto): void
   closeModal(): void
-  addCommentPhoto(commentPhoto: ICommentPhotoDTO): Promise<void>
+  addCommentPhoto(commentPhoto: ICommentPhotoDTO): Promise<IComment>
   isLoading: boolean
   error: string | null
 }
@@ -48,8 +52,10 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
   const addCommentPhoto = useCallback(
     async ({ photoId, comment }: ICommentPhotoDTO) => {
       try {
-        const response = await ApiService.comment.post({ photoId, comment })
-        console.log(response.data)
+        return await ApiService.comment.post({
+          photoId,
+          comment,
+        })
       } catch (error) {
         console.log(error)
       }

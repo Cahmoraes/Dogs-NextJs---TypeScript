@@ -11,6 +11,7 @@ interface PhotoContentProps {
 export function PhotoContent({ photoData }: PhotoContentProps) {
   const { photo, comments } = photoData
 
+  if (!photo) return null
   return (
     <S.PhotoContentContainer>
       <S.ImageContainer>
@@ -33,9 +34,9 @@ export function PhotoContent({ photoData }: PhotoContentProps) {
             <S.Attribute>{photo.idade} anos</S.Attribute>
           </S.Attributes>
         </div>
-      </S.Details>
 
-      <PhotoComments id={photo.id} comments={comments} />
+        <PhotoComments comments={comments} />
+      </S.Details>
     </S.PhotoContentContainer>
   )
 }

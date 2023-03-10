@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect } from 'react'
+import { MouseEvent } from 'react'
 import { Error } from '@/components/Error'
 import {
   PhotoContent,

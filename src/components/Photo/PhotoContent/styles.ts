@@ -41,9 +41,10 @@ export const PhotoContentContainerSkeleton = styled('div', {
   transform: 'scale(0.8)',
   animation: `${scaleUp} .3s forwards`,
 
-  '@media(max-width: 64rem)': {
+  '@media(max-width: 40rem)': {
     '&': {
-      width: '26rem',
+      height: '22rem',
+      width: '22rem',
     },
   },
 })

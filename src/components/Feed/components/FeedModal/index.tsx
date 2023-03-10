@@ -1,4 +1,4 @@
-import { MouseEvent } from 'react'
+import { MouseEvent, useEffect } from 'react'
 import { Error } from '@/components/Error'
 import {
   PhotoContent,
@@ -6,9 +6,11 @@ import {
 } from '@/components/Photo/PhotoContent'
 import { useFeed } from '@/hooks/useFeed'
 import { FeedModalContainer } from './styles'
+import { useEscapeKey } from '@/hooks/useEscapeKey'
 
 export function FeedModal() {
   const { modalPhoto, closeModal, error, isLoading } = useFeed()
+  useEscapeKey(closeModal)
 
   function renderError() {
     return error && <Error message={error} />
@@ -16,6 +18,7 @@ export function FeedModal() {
 
   function handleCloseModal(event: MouseEvent<HTMLDivElement>) {
     const { target, currentTarget } = event
+    console.log('aqui', target === currentTarget)
     if (target === currentTarget) {
       closeModal()
     }

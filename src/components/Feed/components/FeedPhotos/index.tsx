@@ -4,11 +4,21 @@ import { FeedPhotosItem, FeedPhotosItemSkeleton } from '../FeedPhotosItem'
 import { FeedPhotosContainer } from './styles'
 
 interface FeedPhotosProps {
+  updateInfinite(): void
   userId?: number
+  page?: number
 }
 
-export function FeedPhotos({ userId = 0 }: FeedPhotosProps = {}) {
-  const { photos, error, isLoading } = usePhotos({ userId })
+export function FeedPhotos({
+  updateInfinite,
+  userId = 0,
+  page = 1,
+}: FeedPhotosProps) {
+  const { photos, error, isLoading } = usePhotos({
+    userId,
+    page,
+    updateInfinite,
+  })
 
   if (error) return <Error message={error} />
   if (isLoading) return <FeedPhotosSkeleton />

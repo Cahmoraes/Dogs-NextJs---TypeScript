@@ -4,24 +4,36 @@ import { useEffect, useState } from 'react'
 
 interface IUsePhotosProps {
   userId?: number
+  page?: number
+  updateInfinite(): void
 }
 
-export function usePhotos({ userId = 0 }: IUsePhotosProps = {}) {
+export function usePhotos({
+  userId = 0,
+  page = 1,
+  updateInfinite,
+}: IUsePhotosProps) {
   const [photos, setPhotos] = useState<IPhoto[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+  const totalPhotosPerRequest = 6
 
   useEffect(() => {
     ;(async () => {
       try {
         setIsLoading(true)
         const photosResponse = await ApiService.photos.get({
-          page: 1,
+          page,
           total: 6,
           user: userId,
         })
 
         setPhotos(photosResponse)
+
+        const totalPhotos = photosResponse.length
+        if (totalPhotos < totalPhotosPerRequest) {
+          updateInfinite()
+        }
       } catch (error) {
         console.log(error)
         setError('Erro ao carregar fotos')
@@ -29,7 +41,7 @@ export function usePhotos({ userId = 0 }: IUsePhotosProps = {}) {
         setIsLoading(false)
       }
     })()
-  }, [userId])
+  }, [userId, page, updateInfinite])
 
   return {
     photos,

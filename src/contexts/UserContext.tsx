@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router'
 import { ApiService } from '@/services/ApiService'
-import { CookieService, CookieTypes } from '@/utils/CookieService'
+import { CookieService } from '@/utils/CookieService'
 import { createContext, ReactNode, useCallback, useState } from 'react'
 
 interface IUserLoginDTO {
@@ -70,7 +70,7 @@ export function UserProvider({ children }: UserContextProviderProps) {
       }
 
       const user = CookieService.get({
-        name: CookieTypes.USER,
+        name: 'USER',
       })
 
       setUser(JSON.parse(user))
@@ -87,8 +87,8 @@ export function UserProvider({ children }: UserContextProviderProps) {
 
   const hasCookies = (): boolean => {
     return (
-      CookieService.has({ name: CookieTypes.TOKEN }) &&
-      CookieService.has({ name: CookieTypes.USER })
+      CookieService.has({ name: 'TOKEN' }) &&
+      CookieService.has({ name: 'USER' })
     )
   }
 
@@ -109,13 +109,13 @@ export function UserProvider({ children }: UserContextProviderProps) {
           password,
         })
         CookieService.set({
-          name: CookieTypes.TOKEN,
+          name: 'TOKEN',
           value: token,
         })
 
         const { data: user } = await ApiService.user.get()
         CookieService.set({
-          name: CookieTypes.USER,
+          name: 'USER',
           value: JSON.stringify(user),
         })
 
@@ -149,8 +149,8 @@ export function UserProvider({ children }: UserContextProviderProps) {
   )
 
   const destroyCookies = (): void => {
-    CookieService.destroy({ name: CookieTypes.TOKEN })
-    CookieService.destroy({ name: CookieTypes.USER })
+    CookieService.destroy({ name: 'TOKEN' })
+    CookieService.destroy({ name: 'USER' })
   }
 
   return (

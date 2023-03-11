@@ -1,12 +1,13 @@
 import { NextPageContext } from 'next'
 import { setCookie, parseCookies, destroyCookie } from 'nookies'
 
-export enum CookieTypes {
-  'TOKEN' = '@Dogs:token',
-  'USER' = '@Dogs:user',
-}
+export const CookieTypes = {
+  TOKEN: '@Dogs:token',
+  USER: '@Dogs:user',
+} as const
+
 interface ICookieDTO {
-  name: CookieTypes
+  name: keyof typeof CookieTypes
   ctx?: NextPageContext | {}
 }
 

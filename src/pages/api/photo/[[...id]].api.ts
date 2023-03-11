@@ -2,7 +2,7 @@ import { dogApi } from '@/services/ApiService'
 import { assertsMethod, MethodTypes } from '@/pages/api/utils/assertsMethod'
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 import { errorHandler } from '../utils/errorHandler'
-import { CookieService, CookieTypes } from '@/utils/CookieService'
+import { CookieService } from '@/utils/CookieService'
 
 type HandlersType = Record<MethodTypes, NextApiHandler>
 
@@ -22,7 +22,7 @@ const handlers: HandlersType = {
   async DELETE(req, res) {
     const { id } = req.query
     const userToken = CookieService.get({
-      name: CookieTypes.TOKEN,
+      name: 'TOKEN',
       ctx: { req, res },
     })
 

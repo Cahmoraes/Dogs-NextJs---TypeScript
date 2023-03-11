@@ -1,5 +1,5 @@
 import axios, { AxiosError } from 'axios'
-import { CookieService, CookieTypes } from '@/utils/CookieService'
+import { CookieService } from '@/utils/CookieService'
 import { Either, EitherType } from '@cahmoraes93/either'
 import { IComment } from '@/components/Feed/interfaces/IPhoto'
 
@@ -73,7 +73,7 @@ export class ApiService {
       async validate(ctx = {}): Promise<EitherType<any, string>> {
         try {
           const token = CookieService.get({
-            name: CookieTypes.TOKEN,
+            name: 'TOKEN',
             ctx,
           })
 
@@ -111,7 +111,7 @@ export class ApiService {
   static get photo() {
     return {
       async post(formData: FormData) {
-        const token = CookieService.get({ name: CookieTypes.TOKEN })
+        const token = CookieService.get({ name: 'TOKEN' })
 
         try {
           await dogApi.post('/api/photo', formData, {

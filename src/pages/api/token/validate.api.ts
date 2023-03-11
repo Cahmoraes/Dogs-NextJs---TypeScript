@@ -1,7 +1,7 @@
 import { dogApi } from '@/services/ApiService'
 import { assertsMethod } from '@/pages/api/utils/assertsMethod'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { CookieService, CookieTypes } from '@/utils/CookieService'
+import { CookieService } from '@/utils/CookieService'
 import { errorHandler } from '../utils/errorHandler'
 
 export default async function handler(
@@ -12,7 +12,7 @@ export default async function handler(
     assertsMethod(req.method, ['GET'])
 
     const userToken = CookieService.get({
-      name: CookieTypes.TOKEN,
+      name: 'TOKEN',
       ctx: { req, res },
     })
 

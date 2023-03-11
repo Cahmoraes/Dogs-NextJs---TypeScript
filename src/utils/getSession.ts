@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from 'http'
-import { CookieService, CookieTypes } from './CookieService'
+import { CookieService } from './CookieService'
 
 interface IContext {
   req: IncomingMessage
@@ -8,12 +8,12 @@ interface IContext {
 
 export function getSession(ctx?: IContext) {
   const token = CookieService.get({
-    name: CookieTypes.TOKEN,
+    name: 'TOKEN',
     ctx: { req: ctx?.req, res: ctx?.res },
   })
 
   const user = CookieService.get({
-    name: CookieTypes.USER,
+    name: 'USER',
     ctx: { req: ctx?.req, res: ctx?.res },
   })
 

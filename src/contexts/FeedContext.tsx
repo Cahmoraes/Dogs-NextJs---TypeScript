@@ -15,7 +15,7 @@ interface FeedContextData {
   modalPhoto: IPhotoModal | null
   selectModalPhoto(aPhoto: IPhoto): void
   closeModal(): void
-  addCommentPhoto(commentPhoto: ICommentPhotoDTO): Promise<IComment>
+  addCommentPhoto(commentPhoto: ICommentPhotoDTO): Promise<IComment | undefined>
   isLoading: boolean
   error: string | null
 }

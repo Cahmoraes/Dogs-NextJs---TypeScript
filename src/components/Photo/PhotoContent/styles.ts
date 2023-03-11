@@ -49,8 +49,6 @@ export const PhotoContentContainerSkeleton = styled('div', {
   },
 })
 
-export const ImageContainer = styled('div', {})
-
 export const Image = styled(ImageNext, {
   width: '100%',
   height: '100%',

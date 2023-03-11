@@ -4,6 +4,7 @@ import { z } from 'zod'
 import { useFeed } from '@/hooks/useFeed'
 import { SedIcon } from '@/assets/images/enviar'
 import { IComment } from '@/components/Feed/interfaces/IPhoto'
+import * as S from './styles'
 
 const commentFormSchema = z.object({
   comment: z.string().min(1),
@@ -17,7 +18,7 @@ interface PhotoCommentsFormProps {
 
 export function PhotoCommentsForm({ updateComments }: PhotoCommentsFormProps) {
   const { modalPhoto, addCommentPhoto } = useFeed()
-  const { handleSubmit, register } = useForm<CommentFormData>({
+  const { handleSubmit, register, reset } = useForm<CommentFormData>({
     resolver: zodResolver(commentFormSchema),
   })
 
@@ -25,20 +26,26 @@ export function PhotoCommentsForm({ updateComments }: PhotoCommentsFormProps) {
   const { photo } = modalPhoto
 
   async function handleCreateComment({ comment }: CommentFormData) {
-    const commentResponse = await addCommentPhoto({
-      photoId: photo.id,
-      comment,
-    })
+    try {
+      const commentResponse = await addCommentPhoto({
+        photoId: photo.id,
+        comment,
+      })
 
-    updateComments(commentResponse)
+      if (!commentResponse) throw new Error('Erro ao adicionar comentário')
+      updateComments(commentResponse)
+      reset()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
-    <form onSubmit={handleSubmit(handleCreateComment)}>
-      <textarea {...register('comment')} />
-      <button type="submit">
+    <S.Form onSubmit={handleSubmit(handleCreateComment)}>
+      <S.Textarea {...register('comment')} />
+      <S.Button type="submit">
         <SedIcon />
-      </button>
-    </form>
+      </S.Button>
+    </S.Form>
   )
 }

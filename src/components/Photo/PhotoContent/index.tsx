@@ -14,9 +14,7 @@ export function PhotoContent({ photoData }: PhotoContentProps) {
   if (!photo) return null
   return (
     <S.PhotoContentContainer>
-      <S.ImageContainer>
-        <S.Image src={photo.src} alt={photo.title} width={300} height={300} />
-      </S.ImageContainer>
+      <S.Image src={photo.src} alt={photo.title} width={300} height={300} />
 
       <S.Details>
         <div>
@@ -34,9 +32,8 @@ export function PhotoContent({ photoData }: PhotoContentProps) {
             <S.Attribute>{photo.idade} anos</S.Attribute>
           </S.Attributes>
         </div>
-
-        <PhotoComments comments={comments} />
       </S.Details>
+      <PhotoComments comments={comments} />
     </S.PhotoContentContainer>
   )
 }

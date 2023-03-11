@@ -1,7 +1,8 @@
 import { IComment } from '@/components/Feed/interfaces/IPhoto'
 import { useUserStorage } from '@/hooks/useUserStorage'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { PhotoCommentsForm } from '../PhotoCommentsForm'
+import { Comment } from './Comment'
 import * as S from './styles'
 
 interface PhotoCommentsProps {
@@ -10,7 +11,15 @@ interface PhotoCommentsProps {
 
 export function PhotoComments(props: PhotoCommentsProps) {
   const { user } = useUserStorage()
+  const commentsSection = useRef<HTMLDivElement>(null)
   const [comments, setPhotoComments] = useState(props.comments)
+
+  useEffect(() => {
+    if (!commentsSection.current) return
+    const commentSectionElement = commentsSection.current
+    console.log(commentSectionElement.scrollHeight)
+    commentSectionElement.scrollTo({ top: commentSectionElement.scrollHeight })
+  }, [comments])
 
   function renderCommentForm() {
     return user && <PhotoCommentsForm updateComments={updateComments} />
@@ -20,18 +29,18 @@ export function PhotoComments(props: PhotoCommentsProps) {
     setPhotoComments((comments) => [...comments, aComment])
   }, [])
 
-  return (
-    <S.PhotoCommentsContainer>
-      {renderCommentForm()}
+  function renderComments() {
+    return comments.map((comment) => (
+      <Comment key={comment.comment_ID} {...comment} />
+    ))
+  }
 
-      <S.Comments>
-        {comments.map((comment) => (
-          <li key={comment.comment_ID}>
-            <b>{comment.comment_author}:</b>
-            <span>{comment.comment_content}</span>
-          </li>
-        ))}
-      </S.Comments>
-    </S.PhotoCommentsContainer>
+  return (
+    <>
+      <S.PhotoCommentsContainer ref={commentsSection}>
+        <S.Comments>{renderComments()}</S.Comments>
+      </S.PhotoCommentsContainer>
+      {renderCommentForm()}
+    </>
   )
 }

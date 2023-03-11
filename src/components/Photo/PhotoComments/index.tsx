@@ -17,7 +17,6 @@ export function PhotoComments(props: PhotoCommentsProps) {
   useEffect(() => {
     if (!commentsSection.current) return
     const commentSectionElement = commentsSection.current
-    console.log(commentSectionElement.scrollHeight)
     commentSectionElement.scrollTo({ top: commentSectionElement.scrollHeight })
   }, [comments])
 

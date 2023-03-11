@@ -13,7 +13,7 @@ export function FeedModal() {
   useEscapeKey(closeModal)
 
   function renderError() {
-    return error && <Error message={error} />
+    return error && <Error message={error.getPhotoError} />
   }
 
   function handleCloseModal(event: MouseEvent<HTMLDivElement>) {

@@ -11,10 +11,16 @@ interface ICommentPhotoDTO {
   comment: string
 }
 
+interface IErrorMessage {
+  getPhotoError?: string | null
+  addPhotoComment?: string | null
+  deletePhoto?: string | null
+}
+
 interface FeedContextData {
   modalPhoto: IPhotoModal | null
   isLoading: boolean
-  error: string | null
+  error: IErrorMessage | null
   selectModalPhoto(aPhoto: IPhoto): void
   closeModal(): void
   addCommentPhoto(commentPhoto: ICommentPhotoDTO): Promise<IComment | undefined>
@@ -27,10 +33,15 @@ interface FeedContextProviderProps {
   children: ReactNode
 }
 
+interface ISelectErrorDTO {
+  error: keyof IErrorMessage
+  message: string
+}
+
 export function FeedContextProvider({ children }: FeedContextProviderProps) {
   const [modalPhoto, setModalPhoto] = useState<IPhotoModal | null>(null)
   const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<null | string>(null)
+  const [error, setError] = useState<IErrorMessage | null>(null)
 
   const selectModalPhoto = useCallback(async (aPhoto: IPhoto) => {
     try {
@@ -44,7 +55,11 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
       setModalPhoto(photoResponse)
     } catch (error) {
       console.log(error)
-      setError('Erro ao carregar fotos')
+
+      selectError({
+        error: 'getPhotoError',
+        message: 'Não foi possível carregar foto',
+      })
     } finally {
       setIsLoading(false)
     }
@@ -59,6 +74,11 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
         })
       } catch (error) {
         console.log(error)
+
+        selectError({
+          error: 'addPhotoComment',
+          message: 'Não foi possível adicionar o comentário',
+        })
       }
     },
     [],
@@ -71,12 +91,20 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
       })
     } catch (error) {
       console.log(error)
+      selectError({
+        error: 'deletePhoto',
+        message: 'Não foi possível deletar a foto',
+      })
     }
   }, [])
 
   const closeModal = useCallback(() => {
     setModalPhoto(null)
   }, [])
+
+  const selectError = ({ error, message }: ISelectErrorDTO) => {
+    setError((state) => ({ ...state, [error]: message }))
+  }
 
   return (
     <FeedContext.Provider

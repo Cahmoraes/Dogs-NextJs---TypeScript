@@ -6,7 +6,8 @@ export function useEscapeKey(callbackFn: CallableFunction) {
       callbackFunction: CallableFunction,
       event: KeyboardEvent,
     ) {
-      if (event.key === 'Escape') {
+      if (['Escape', 'Backspace'].includes(event.key)) {
+        event.preventDefault()
         callbackFunction()
       }
     }

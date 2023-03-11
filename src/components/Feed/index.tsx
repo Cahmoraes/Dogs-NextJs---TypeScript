@@ -3,12 +3,16 @@ import { FeedModal } from './components/FeedModal'
 import { FeedPhotos } from './components/FeedPhotos'
 import { FeedContainer } from './styles'
 
-export function Feed() {
+interface FeedProps {
+  userId?: number
+}
+
+export function Feed({ userId = 0 }: FeedProps = {}) {
   return (
     <FeedContainer>
       <FeedContextProvider>
         <FeedModal />
-        <FeedPhotos />
+        <FeedPhotos userId={userId} />
       </FeedContextProvider>
     </FeedContainer>
   )

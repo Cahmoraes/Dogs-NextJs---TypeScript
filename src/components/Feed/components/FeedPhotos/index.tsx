@@ -3,8 +3,12 @@ import { usePhotos } from '@/hooks/usePhotos'
 import { FeedPhotosItem, FeedPhotosItemSkeleton } from '../FeedPhotosItem'
 import { FeedPhotosContainer } from './styles'
 
-export function FeedPhotos() {
-  const { photos, error, isLoading } = usePhotos()
+interface FeedPhotosProps {
+  userId?: number
+}
+
+export function FeedPhotos({ userId = 0 }: FeedPhotosProps = {}) {
+  const { photos, error, isLoading } = usePhotos({ userId })
 
   if (error) return <Error message={error} />
   if (isLoading) return <FeedPhotosSkeleton />

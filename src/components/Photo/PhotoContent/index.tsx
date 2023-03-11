@@ -1,7 +1,9 @@
 import { Title } from '@/components/Title'
+import { useUserStorage } from '@/hooks/useUserStorage'
 import Skeleton from 'react-loading-skeleton'
 import { IPhotoModal } from '../../Feed/interfaces/IPhoto'
 import { PhotoComments } from '../PhotoComments'
+import { PhotoDelete } from '../PhotoDelete'
 import * as S from './styles'
 
 interface PhotoContentProps {
@@ -10,6 +12,15 @@ interface PhotoContentProps {
 
 export function PhotoContent({ photoData }: PhotoContentProps) {
   const { photo, comments } = photoData
+  const { user } = useUserStorage()
+
+  function renderDeleteButtonOrAuthor() {
+    return user?.username === photo.author ? (
+      <PhotoDelete id={photo.id} />
+    ) : (
+      <S.Link href={`/perfil/${photo.author}`}>@{photo.author}</S.Link>
+    )
+  }
 
   if (!photo) return null
   return (
@@ -19,7 +30,8 @@ export function PhotoContent({ photoData }: PhotoContentProps) {
       <S.Details>
         <div>
           <S.Author>
-            <S.Link href={`/perfil/${photo.author}`}>@{photo.author}</S.Link>
+            {renderDeleteButtonOrAuthor()}
+
             <S.Visualizations>{photo.acessos}</S.Visualizations>
           </S.Author>
 

@@ -13,11 +13,12 @@ interface ICommentPhotoDTO {
 
 interface FeedContextData {
   modalPhoto: IPhotoModal | null
+  isLoading: boolean
+  error: string | null
   selectModalPhoto(aPhoto: IPhoto): void
   closeModal(): void
   addCommentPhoto(commentPhoto: ICommentPhotoDTO): Promise<IComment | undefined>
-  isLoading: boolean
-  error: string | null
+  deletePhoto(photoId: number): Promise<void>
 }
 
 export const FeedContext = createContext({} as FeedContextData)
@@ -63,6 +64,16 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
     [],
   )
 
+  const deletePhoto = useCallback(async (photoId: number) => {
+    try {
+      return await ApiService.photo.delete({
+        id: photoId,
+      })
+    } catch (error) {
+      console.log(error)
+    }
+  }, [])
+
   const closeModal = useCallback(() => {
     setModalPhoto(null)
   }, [])
@@ -74,6 +85,7 @@ export function FeedContextProvider({ children }: FeedContextProviderProps) {
         selectModalPhoto,
         closeModal,
         addCommentPhoto,
+        deletePhoto,
         isLoading,
         error,
       }}

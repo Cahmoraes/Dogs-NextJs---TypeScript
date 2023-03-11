@@ -63,7 +63,7 @@ export const Details = styled('div', {
   padding: '2rem 2rem 0 2rem',
 })
 
-export const Author = styled('p', {
+export const Author = styled('div', {
   opacity: '.5',
   marginBottom: '1rem',
   display: 'flex',

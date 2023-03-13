@@ -7,6 +7,7 @@ import * as S from './styles'
 
 interface PhotoCommentsProps {
   comments: IComment[]
+  single?: boolean
 }
 
 export function PhotoComments(props: PhotoCommentsProps) {
@@ -21,7 +22,14 @@ export function PhotoComments(props: PhotoCommentsProps) {
   }, [comments])
 
   function renderCommentForm() {
-    return user && <PhotoCommentsForm updateComments={updateComments} />
+    return (
+      user && (
+        <PhotoCommentsForm
+          updateComments={updateComments}
+          data-single={props.single}
+        />
+      )
+    )
   }
 
   const updateComments = useCallback((aComment: IComment) => {
@@ -36,7 +44,10 @@ export function PhotoComments(props: PhotoCommentsProps) {
 
   return (
     <>
-      <S.PhotoCommentsContainer ref={commentsSection}>
+      <S.PhotoCommentsContainer
+        ref={commentsSection}
+        data-single={props.single}
+      >
         <S.Comments>{renderComments()}</S.Comments>
       </S.PhotoCommentsContainer>
       {renderCommentForm()}

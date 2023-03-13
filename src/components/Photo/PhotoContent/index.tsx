@@ -8,9 +8,10 @@ import * as S from './styles'
 
 interface PhotoContentProps {
   photoData: IPhotoModal
+  single?: boolean
 }
 
-export function PhotoContent({ photoData }: PhotoContentProps) {
+export function PhotoContent({ photoData, single = false }: PhotoContentProps) {
   const { photo, comments } = photoData
   const { user } = useUserStorage()
 
@@ -24,7 +25,7 @@ export function PhotoContent({ photoData }: PhotoContentProps) {
 
   if (!photo) return null
   return (
-    <S.PhotoContentContainer>
+    <S.PhotoContentContainer data-single={single}>
       <S.Image src={photo.src} alt={photo.title} width={300} height={300} />
 
       <S.Details>
@@ -45,7 +46,7 @@ export function PhotoContent({ photoData }: PhotoContentProps) {
           </S.Attributes>
         </div>
       </S.Details>
-      <PhotoComments comments={comments} />
+      <PhotoComments comments={comments} single />
     </S.PhotoContentContainer>
   )
 }

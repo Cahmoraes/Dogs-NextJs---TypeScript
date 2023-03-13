@@ -15,9 +15,13 @@ type CommentFormData = z.infer<typeof commentFormSchema>
 
 interface PhotoCommentsFormProps {
   updateComments(aComment: IComment): void
+  single?: boolean
 }
 
-export function PhotoCommentsForm({ updateComments }: PhotoCommentsFormProps) {
+export function PhotoCommentsForm({
+  updateComments,
+  single,
+}: PhotoCommentsFormProps) {
   const { modalPhoto, addCommentPhoto, error } = useFeed()
   const { handleSubmit, register, reset } = useForm<CommentFormData>({
     resolver: zodResolver(commentFormSchema),
@@ -47,7 +51,7 @@ export function PhotoCommentsForm({ updateComments }: PhotoCommentsFormProps) {
   }
 
   return (
-    <S.Form onSubmit={handleSubmit(handleCreateComment)}>
+    <S.Form onSubmit={handleSubmit(handleCreateComment)} data-single={single}>
       {renderError()}
       <S.Textarea {...register('comment')} />
       <S.Button type="submit">

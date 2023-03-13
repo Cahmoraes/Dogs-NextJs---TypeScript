@@ -5,6 +5,10 @@ export const Form = styled('form', {
   gridTemplateColumns: '1fr auto',
   alignItems: 'stretch',
   margin: '1rem',
+
+  '&[data-single="true"]': {
+    margin: '1rem 0',
+  },
 })
 
 export const Textarea = styled('textarea', {

@@ -28,6 +28,11 @@ export const PhotoContentContainer = styled('div', {
       gridTemplateColumns: 'minmax(20rem, 40rem)',
     },
   },
+
+  '&[data-single="true"]': {
+    gridTemplateColumns: '1fr',
+    height: 'auto',
+  },
 })
 
 export const PhotoContentContainerSkeleton = styled('div', {
@@ -57,10 +62,20 @@ export const Image = styled(ImageNext, {
   '@media(max-width: 64rem)': {
     gridRow: '1',
   },
+
+  '[data-single="true"] &': {
+    gridRow: 1,
+    borderRadius: '.4rem',
+    overflow: 'hidden',
+  },
 })
 
 export const Details = styled('div', {
   padding: '2rem 2rem 0 2rem',
+
+  '[data-single="true"] &': {
+    padding: '1rem 0 0 0',
+  },
 })
 
 export const Author = styled('div', {

@@ -1,4 +1,4 @@
-export function assert(
+export function asserts(
   condition: unknown,
   errorMessage: string,
 ): asserts condition {

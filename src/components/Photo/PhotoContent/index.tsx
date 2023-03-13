@@ -46,7 +46,7 @@ export function PhotoContent({ photoData, single = false }: PhotoContentProps) {
           </S.Attributes>
         </div>
       </S.Details>
-      <PhotoComments comments={comments} single />
+      <PhotoComments comments={comments} single={single} />
     </S.PhotoContentContainer>
   )
 }

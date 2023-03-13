@@ -16,7 +16,7 @@ export function usePhotos({
   const [photos, setPhotos] = useState<IPhoto[]>([])
   const [error, setError] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const totalPhotosPerRequest = 6
+  const totalPhotosPerRequest = 3
 
   useEffect(() => {
     ;(async () => {

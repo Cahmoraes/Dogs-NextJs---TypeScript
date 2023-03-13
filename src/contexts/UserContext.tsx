@@ -78,12 +78,11 @@ export function UserProvider({ children }: UserContextProviderProps) {
     } catch (error) {
       setUser(null)
       console.log(error)
-      router.push('/')
       return false
     } finally {
       setIsLoading(false)
     }
-  }, [router])
+  }, [])
 
   const hasCookies = (): boolean => {
     return (

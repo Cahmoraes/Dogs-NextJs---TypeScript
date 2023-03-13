@@ -3,7 +3,7 @@ import { ApiService } from '@/services/ApiService'
 import { useEffect, useState } from 'react'
 
 interface IUsePhotosProps {
-  userId?: number
+  userId?: number | string
   page?: number
   updateInfinite(): void
 }

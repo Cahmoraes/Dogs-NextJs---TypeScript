@@ -26,7 +26,7 @@ export interface IUserGetResponse {
 export interface IPhotosDTO {
   page: number
   total: number
-  user: number
+  user: number | string
 }
 
 interface IPhotoDTO {

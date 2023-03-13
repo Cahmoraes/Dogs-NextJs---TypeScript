@@ -5,7 +5,7 @@ import { FeedPhotosContainer } from './styles'
 
 interface FeedPhotosProps {
   updateInfinite(): void
-  userId?: number
+  userId?: number | string
   page?: number
 }
 

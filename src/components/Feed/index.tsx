@@ -5,7 +5,7 @@ import { FeedPhotos } from './components/FeedPhotos'
 import { FeedContainer } from './styles'
 
 interface FeedProps {
-  userId?: number
+  userId?: number | string
 }
 
 export function Feed({ userId = 0 }: FeedProps = {}) {

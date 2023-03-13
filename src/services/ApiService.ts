@@ -65,6 +65,12 @@ interface IPasswordLostDTO {
   url: string
 }
 
+export interface IStatsGet {
+  id: number
+  title: string
+  acessos: string
+}
+
 export class ApiService {
   static get token() {
     return {
@@ -218,6 +224,20 @@ export class ApiService {
             console.log(error.response?.data.error)
           }
 
+          throw error
+        }
+      },
+    }
+  }
+
+  static get stats() {
+    return {
+      async get() {
+        try {
+          const { data } = await api.get<IStatsGet[]>('/stats')
+          return data
+        } catch (error) {
+          console.log(error)
           throw error
         }
       },

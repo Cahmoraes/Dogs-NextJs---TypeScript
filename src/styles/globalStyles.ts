@@ -64,4 +64,8 @@ export const globalStyles = globalCss({
       '--pseudo-element-display': 'block!important',
     },
   },
+
+  '.VictoryContainer': {
+    height: 'initial !import',
+  },
 })

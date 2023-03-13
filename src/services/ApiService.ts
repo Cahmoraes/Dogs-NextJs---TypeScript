@@ -60,6 +60,11 @@ interface ICommentPost {
   comment: string
 }
 
+interface IPasswordLostDTO {
+  login: string
+  url: string
+}
+
 export class ApiService {
   static get token() {
     return {
@@ -189,6 +194,26 @@ export class ApiService {
         } catch (error) {
           console.log(error)
 
+          if (error instanceof AxiosError) {
+            console.log(error.response?.data.error)
+          }
+
+          throw error
+        }
+      },
+    }
+  }
+
+  static get lostPassword() {
+    return {
+      async post({ login, url }: IPasswordLostDTO) {
+        try {
+          const { data } = await api.post<string>('/password/lost', {
+            login,
+            url,
+          })
+          return data
+        } catch (error) {
           if (error instanceof AxiosError) {
             console.log(error.response?.data.error)
           }

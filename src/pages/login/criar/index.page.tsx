@@ -9,6 +9,7 @@ import { Input } from '@/components/forms/Input'
 import { Button } from '@/components/forms/Button'
 import { useUserStorage } from '@/hooks/useUserStorage'
 import { Error } from '@/components/Error'
+import { Head } from '@/components/Head'
 
 const accountCreateDataSchema = z.object({
   username: z.string().min(1, 'Preencha um usuário válido'),
@@ -40,6 +41,8 @@ export default function LoginCreate() {
 
   return (
     <LoginLayout>
+      <Head>Crie sua conta</Head>
+
       <LoginCreateContainer className="anime-left">
         <Title>Cadastre-se</Title>
 

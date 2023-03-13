@@ -15,6 +15,7 @@ import {
   Subtitle,
 } from './styles'
 import { Error } from '@/components/Error'
+import { Head } from '@/components/Head'
 
 const loginSchema = z.object({
   username: z.string().min(1, 'Preenchimento obrigatório'),
@@ -59,6 +60,7 @@ function Login({ userCookie }: LoginProps) {
 
   return (
     <section className="animeLeft">
+      <Head>Login</Head>
       <Title>Login</Title>
 
       <Form onSubmit={handleSubmit(handleLogin)}>

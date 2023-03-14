@@ -19,7 +19,6 @@ const UserStatsComponent = () => {
 
         const response = await ApiService.stats.get()
         setData(response)
-        console.log(response)
       } catch (error) {
         console.log(error)
         setData([])

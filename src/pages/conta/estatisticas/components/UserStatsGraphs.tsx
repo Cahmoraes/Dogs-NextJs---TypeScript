@@ -35,7 +35,7 @@ interface UserStatsGraphsProps {
 
 export function UserStatsGraphs({ data }: UserStatsGraphsProps) {
   const [graph, setGraph] = useState<IGraphData[]>([])
-  console.log(data)
+
   const total = useMemo(
     () =>
       data

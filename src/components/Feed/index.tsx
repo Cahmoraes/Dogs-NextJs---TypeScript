@@ -21,9 +21,7 @@ export function Feed({ userId = 0 }: FeedProps = {}) {
       const height = document.body.offsetHeight - window.innerHeight
 
       if (scroll > height * 0.75 && !wait) {
-        console.log('aqui')
         setPages((state) => [...state, state.length++])
-        console.log(true)
         wait = true
 
         setTimeout(() => {

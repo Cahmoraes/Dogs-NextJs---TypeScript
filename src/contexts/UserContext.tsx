@@ -103,26 +103,17 @@ export function UserProvider({ children }: UserContextProviderProps) {
         setError(null)
         setIsLoading(true)
 
-        const { data: token } = await ApiService.token.get({
-          username,
-          password,
-        })
-        CookieService.set({
-          name: 'TOKEN',
-          value: token,
-        })
+        const token = await getToken({ username, password })
+        setTokenCookie(token)
 
-        const { data: user } = await ApiService.user.get()
-        CookieService.set({
-          name: 'USER',
-          value: JSON.stringify(user),
-        })
+        const user = await getUser()
+        setUserCookie(user)
 
         await router.push('/conta')
         setUser(user)
       } catch (error) {
         if (error instanceof Error) setError('Usuário inválido')
-
+        setUser(null)
         console.log(error)
       } finally {
         setIsLoading(false)
@@ -130,6 +121,37 @@ export function UserProvider({ children }: UserContextProviderProps) {
     },
     [router],
   )
+
+  const setUserCookie = (user: IUserGetResponse) => {
+    CookieService.set({
+      name: 'USER',
+      value: JSON.stringify(user),
+    })
+  }
+
+  const setTokenCookie = (token: string) => {
+    CookieService.set({
+      name: 'TOKEN',
+      value: token,
+    })
+  }
+
+  const getToken = async ({
+    username,
+    password,
+  }: IUserLoginDTO): Promise<string> => {
+    const { data: token } = await ApiService.token.get({
+      username,
+      password,
+    })
+
+    return token
+  }
+
+  const getUser = async (): Promise<IUserGetResponse> => {
+    const { data: user } = await ApiService.user.get()
+    return user
+  }
 
   const create = useCallback(
     async (userData: IUserCreateDTO) => {

@@ -8,7 +8,6 @@ type HandlersType = Record<MethodTypes, NextApiHandler>
 const handlers: HandlersType = {
   async POST(req, res) {
     const { login, url } = req.body
-    console.log({ login, url })
 
     const { data } = await dogApi.post('/api/user', { login, url })
     return res.json(data)

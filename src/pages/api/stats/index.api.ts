@@ -19,7 +19,6 @@ const handlers: HandlersType = {
       },
     })
 
-    console.log(data)
     return res.json(data)
   },
 

@@ -1,5 +1,5 @@
 import dynamic from 'next/dynamic'
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { IStatsGet } from '@/services/ApiService'
 import * as S from './styles'
 
@@ -24,17 +24,19 @@ const VictoryBar = dynamic(
   },
 )
 
-interface IGraphData {
-  x: string
-  y: number
-}
-
 interface UserStatsGraphsProps {
   data: IStatsGet[]
 }
 
 export function UserStatsGraphs({ data }: UserStatsGraphsProps) {
-  const [graph, setGraph] = useState<IGraphData[]>([])
+  const graph = useMemo(
+    () =>
+      data.map((item) => ({
+        x: item.title,
+        y: Number(item.acessos),
+      })),
+    [data],
+  )
 
   const total = useMemo(
     () =>
@@ -44,19 +46,12 @@ export function UserStatsGraphs({ data }: UserStatsGraphsProps) {
     [data],
   )
 
-  useEffect(() => {
-    const graphData = data.map((item) => ({
-      x: item.title,
-      y: Number(item.acessos),
-    }))
-    setGraph(graphData)
-  }, [data])
-
   return (
     <S.UserStatsContainer className="animeLeft">
       <S.GraphItem>
         <S.Total>Acessos: {total}</S.Total>
       </S.GraphItem>
+
       <S.GraphItem>
         <VictoryPie
           data={graph}
@@ -75,6 +70,7 @@ export function UserStatsGraphs({ data }: UserStatsGraphsProps) {
           }}
         />
       </S.GraphItem>
+
       <S.GraphItem>
         <VictoryChart>
           <VictoryBar data={graph} alignment="start" />
